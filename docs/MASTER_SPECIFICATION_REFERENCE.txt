@@ -1,0 +1,1230 @@
+DEVPATH ACADEMY — ESPECIFICAÇÃO-MESTRE DO PROJETO
+
+Documento oficial de produto, plataforma, currículo e implementação
+
+1. VISÃO GERAL
+
+A DevPath Academy será uma plataforma educacional online, com aparência profissional, na qual os alunos poderão realizar formações completas na área de tecnologia.
+
+A primeira formação será o Bootcamp Full Stack — do absoluto zero ao desenvolvimento profissional de aplicações web.
+
+O objetivo é levar uma pessoa sem experiência em programação a compreender os fundamentos, desenvolver interfaces, criar aplicações, trabalhar com bancos de dados, desenvolver backends, integrar sistemas, testar aplicações e publicar projetos completos.
+
+A plataforma deverá ser preparada para receber outras formações futuramente, sem precisar ser reconstruída.
+
+Formações futuras previstas:
+
+* Desenvolvimento de jogos.
+* Python e desenvolvimento de software.
+* Inteligência Artificial.
+* Desenvolvimento mobile.
+* Cibersegurança.
+* Ciência de dados.
+* Engenharia de software.
+* Outras formações de tecnologia.
+
+A DevPath Academy não deve ser um simples site de aulas. Deve funcionar como um ambiente de aprendizagem completo, com acompanhamento individual, avaliações, projetos, professor de IA, administração e certificação.
+
+2. IDENTIDADE E DESIGN
+
+Nome: DevPath Academy.
+
+Tema: Dark.
+
+Estilo visual:
+
+* Interface moderna, profissional e tecnológica.
+* Fundo escuro, com tons de azul-marinho e preto.
+* Detalhes em ciano e azul.
+* Tipografia legível.
+* Animações discretas.
+* Navegação simples e intuitiva.
+* Layout responsivo para computador, tablet e celular.
+
+A experiência deve transmitir a sensação de uma plataforma educacional profissional, não de um painel administrativo genérico.
+
+O sistema deverá ser um site responsivo e preparado para funcionar como PWA, permitindo instalação na tela inicial do celular e uma experiência semelhante à de um aplicativo.
+
+3. TIPOS DE USUÁRIO E PERMISSÕES
+
+Existirão três conceitos principais:
+
+3.1 Administrador
+
+O administrador terá controle completo da plataforma.
+
+Deverá poder:
+
+* Criar, editar, publicar, arquivar e excluir formações.
+* Criar e organizar módulos.
+* Criar, editar e reorganizar aulas.
+* Cadastrar atividades, provas e projetos.
+* Definir notas mínimas.
+* Configurar critérios de aprovação.
+* Criar e revogar convites.
+* Consultar todos os alunos.
+* Consultar o desempenho individual.
+* Corrigir atividades.
+* Enviar comentários e feedback.
+* Consultar tentativas anteriores.
+* Liberar módulos manualmente quando necessário.
+* Bloquear acessos de maneira justificada.
+* Consultar relatórios gerais.
+* Gerenciar certificados.
+* Configurar notificações.
+* Gerenciar o conteúdo da plataforma.
+* Consultar registros de auditoria.
+
+O administrador também poderá estudar normalmente.
+
+Importante: a conta administrativa deverá possuir a possibilidade de entrar no ambiente de aluno, matricular-se em uma formação e acompanhar as aulas e atividades como qualquer estudante. Isso permitirá que o administrador teste a experiência real do curso.
+
+O acesso administrativo não deverá ser concedido automaticamente a nenhum usuário que se cadastre.
+
+3.2 Aluno
+
+O aluno terá acesso apenas às próprias informações e aos conteúdos autorizados.
+
+Poderá:
+
+* Consultar as formações disponíveis para as quais possui matrícula.
+* Acessar o painel individual.
+* Estudar as aulas liberadas.
+* Consultar aulas futuras bloqueadas.
+* Assistir a vídeos e consultar materiais.
+* Executar exemplos de código.
+* Fazer anotações privadas.
+* Realizar exercícios.
+* Enviar atividades.
+* Entregar projetos.
+* Fazer provas.
+* Consultar notas.
+* Receber feedback.
+* Consultar tentativas anteriores.
+* Solicitar recuperação.
+* Acompanhar a evolução.
+* Utilizar o professor de IA.
+* Consultar o calendário.
+* Baixar materiais.
+* Montar um portfólio.
+* Emitir o certificado após cumprir os requisitos.
+
+Um aluno nunca poderá visualizar as notas, anotações, atividades privadas ou dados de outro aluno.
+
+3.3 Professor de IA
+
+O professor de IA será um assistente educacional integrado à plataforma.
+
+Deverá:
+
+* Responder dúvidas sobre a aula atual.
+* Explicar conceitos de maneira simples.
+* Adaptar explicações ao nível do aluno.
+* Apresentar exemplos adicionais.
+* Explicar códigos linha por linha.
+* Identificar erros de programação.
+* Ajudar a interpretar mensagens de erro.
+* Criar exercícios complementares.
+* Fazer perguntas para testar a compreensão.
+* Ajudar o aluno a revisar conteúdos anteriores.
+* Explicar por que determinada resposta está incorreta.
+* Dar pistas para resolver desafios sem entregar imediatamente a solução.
+* Considerar o progresso e o histórico de aprendizagem do aluno.
+
+O professor de IA deverá priorizar o material oficial da formação, mas também poderá explicar conceitos relacionados.
+
+Não deverá simplesmente entregar a solução de todas as atividades avaliativas. Deve priorizar o aprendizado, oferecendo pistas, perguntas e explicações.
+
+A IA não poderá alterar notas oficiais, aprovar alunos ou desbloquear módulos por conta própria.
+
+A integração deverá utilizar uma API de IA, com chave armazenada exclusivamente no servidor. Não expor chaves no navegador.
+
+Deverá existir controle de custos, limites de utilização, histórico de conversas e proteção contra abuso.
+
+4. ESTRUTURA GERAL DA PLATAFORMA
+
+4.1 Página inicial
+
+A página inicial deverá apresentar:
+
+* Identidade DevPath Academy.
+* Apresentação da plataforma.
+* Formações disponíveis.
+* Descrição do Bootcamp Full Stack.
+* Duração.
+* Nível de dificuldade.
+* Competências desenvolvidas.
+* Projetos que o aluno construirá.
+* Como funciona a aprovação.
+* Informações sobre certificação.
+* Botão de login.
+* Acesso para cadastro por convite.
+
+Não deverá existir cadastro público aberto.
+
+4.2 Sistema de cadastro por convite
+
+O administrador poderá gerar convites individuais.
+
+Cada convite deverá:
+
+* Possuir código aleatório e seguro.
+* Ser armazenado de forma protegida, preferencialmente com hash.
+* Ter prazo de validade configurável.
+* Poder ser revogado.
+* Ser utilizado apenas uma vez, salvo configuração explícita.
+* Ser validado no servidor.
+* Não permitir que o usuário escolha ou atribua a si mesmo permissões administrativas.
+
+O cadastro deverá solicitar os dados necessários, como nome, email e senha.
+
+A senha nunca deverá ser armazenada em texto puro.
+
+4.3 Login e recuperação de senha
+
+Implementar:
+
+* Login por email e senha.
+* Recuperação de senha por email.
+* Encerramento de sessão.
+* Proteção contra tentativas excessivas.
+* Validação de sessão.
+* Proteção de rotas.
+* Mensagens de erro claras.
+
+4.4 Painel do aluno
+
+O painel deverá apresentar:
+
+Visão geral
+
+* Saudação.
+* Formação em andamento.
+* Progresso geral.
+* Módulo atual.
+* Próxima aula.
+* Atividades pendentes.
+* Próximas avaliações.
+* Últimas notas.
+* Tempo de estudo, quando disponível.
+* Conquistas e certificados.
+
+Área de aprendizagem
+
+* Lista de módulos.
+* Aulas de cada módulo.
+* Progresso por aula.
+* Estado de cada atividade.
+* Materiais complementares.
+* Aulas bloqueadas com indicação dos requisitos necessários.
+
+Área de avaliações
+
+* Exercícios.
+* Questionários.
+* Provas.
+* Projetos.
+* Histórico de tentativas.
+* Notas e feedback.
+
+Área pessoal
+
+* Anotações privadas.
+* Histórico de aprendizagem.
+* Calendário.
+* Portfólio.
+* Conquistas.
+* Configurações da conta.
+
+4.5 Página individual da aula
+
+Cada aula deverá possuir:
+
+1. Título e identificação do módulo.
+2. Objetivos de aprendizagem.
+3. Pré-requisitos.
+4. Tempo estimado.
+5. Explicação teórica.
+6. Exemplos práticos.
+7. Blocos de código.
+8. Explicação dos códigos.
+9. Diagramas e ilustrações.
+10. Erros comuns.
+11. Boas práticas.
+12. Exercícios.
+13. Desafio prático.
+14. Resumo.
+15. Questionário de compreensão.
+16. Botão para marcar como concluída, respeitando os critérios de conclusão.
+17. Acesso ao professor de IA.
+18. Acesso a materiais complementares.
+
+O conteúdo deverá ser dividido em seções para facilitar a leitura.
+
+Não criar aulas que sejam apenas títulos, resumos superficiais ou textos genéricos.
+
+4.6 Painel administrativo
+
+O administrador deverá possuir um painel com:
+
+Indicadores
+
+* Total de alunos.
+* Alunos ativos.
+* Alunos inativos.
+* Matrículas por formação.
+* Taxa de conclusão.
+* Média de notas.
+* Atividades aguardando correção.
+* Convites disponíveis.
+* Alunos com dificuldades.
+
+Gestão de alunos
+
+* Pesquisar alunos.
+* Consultar perfil.
+* Consultar progresso.
+* Consultar notas.
+* Consultar atividades.
+* Consultar projetos.
+* Consultar tentativas.
+* Enviar feedback.
+* Suspender ou reativar acesso, respeitando regras de auditoria.
+
+Gestão de conteúdo
+
+* Criar formações.
+* Criar módulos.
+* Criar aulas.
+* Criar atividades.
+* Criar provas.
+* Criar projetos.
+* Organizar a ordem dos conteúdos.
+* Definir pré-requisitos.
+* Publicar e despublicar conteúdos.
+
+Correções
+
+* Visualizar entregas.
+* Abrir códigos e arquivos enviados.
+* Atribuir nota.
+* Enviar feedback detalhado.
+* Solicitar correção.
+* Aprovar ou reprovar.
+* Manter histórico das correções.
+
+Convites
+
+* Gerar.
+* Consultar.
+* Revogar.
+* Expirar.
+* Verificar utilização.
+
+5. ORGANIZAÇÃO DAS FORMAÇÕES
+
+A plataforma deverá utilizar uma estrutura hierárquica:
+
+Formação → Módulos → Aulas → Seções → Atividades → Avaliações.
+
+Cada formação terá:
+
+* Nome.
+* Descrição.
+* Objetivos.
+* Nível.
+* Duração estimada.
+* Competências.
+* Módulos.
+* Critérios de conclusão.
+* Certificado correspondente.
+
+Cada módulo terá:
+
+* Nome.
+* Descrição.
+* Objetivos.
+* Pré-requisitos.
+* Aulas.
+* Atividades.
+* Projeto, quando aplicável.
+* Avaliação final.
+* Critérios de aprovação.
+
+O sistema deverá suportar várias formações e várias matrículas por aluno.
+
+Não desenvolver a plataforma de forma que o banco de dados ou o código dependam exclusivamente do curso Full Stack.
+
+6. SISTEMA PEDAGÓGICO E DESBLOQUEIO
+
+O curso terá duração planejada de 90 dias.
+
+A referência de estudo será de aproximadamente 3 horas por dia, com seis dias de estudo por semana e um dia destinado a descanso, revisão ou recuperação.
+
+A duração é uma meta de ritmo, não uma reprovação automática por calendário.
+
+O desbloqueio será baseado em domínio do conteúdo.
+
+Regras iniciais sugeridas:
+
+* Conclusão dos requisitos obrigatórios das aulas.
+* Entrega das atividades obrigatórias.
+* Conclusão dos projetos exigidos.
+* Aprovação na avaliação do módulo.
+* Nota mínima de 70/100.
+
+A plataforma deverá permitir configurar esses requisitos por módulo.
+
+Não liberar um módulo apenas porque passou determinada data.
+
+O aluno poderá revisar conteúdos anteriormente liberados.
+
+Sistema de recuperação
+
+Quando o aluno não atingir a nota mínima:
+
+* Mostrar a nota.
+* Mostrar o que foi acertado e errado.
+* Apresentar os assuntos que precisam ser revisados.
+* Liberar materiais de recuperação.
+* Permitir nova tentativa conforme a política definida.
+* Registrar todas as tentativas.
+* Preservar o histórico de notas.
+
+O administrador poderá configurar o número de tentativas e as condições de recuperação.
+
+Não apagar tentativas anteriores.
+
+Cálculo de notas inicial
+
+* Exercícios: 20%.
+* Avaliações teóricas: 15%.
+* Projetos: 35%.
+* Avaliação final: 30%.
+
+Nota mínima inicial: 70/100.
+
+Os pesos devem ser configuráveis pelo administrador.
+
+7. CURRÍCULO COMPLETO — BOOTCAMP FULL STACK DE 90 DIAS
+
+OBJETIVO DA FORMAÇÃO
+
+Ao final, o aluno deverá ser capaz de:
+
+* Entender os fundamentos da programação.
+* Construir páginas web com HTML e CSS.
+* Criar interfaces interativas com JavaScript.
+* Desenvolver aplicações React.
+* Criar servidores e APIs com Node.js.
+* Modelar bancos de dados SQL.
+* Utilizar PostgreSQL.
+* Integrar frontend e backend.
+* Implementar autenticação e autorização.
+* Utilizar TypeScript.
+* Testar e depurar aplicações.
+* Trabalhar com Git e GitHub.
+* Organizar projetos de maneira profissional.
+* Publicar aplicações na internet.
+* Construir um portfólio técnico.
+
+MÓDULO 1 — FUNDAMENTOS DA PROGRAMAÇÃO E WEB
+
+Dias 1 a 7 — Introdução à computação e lógica
+
+Conteúdos:
+
+* O que é programação.
+* Como funciona um computador.
+* Hardware e software.
+* Sistemas operacionais.
+* Arquivos, pastas e extensões.
+* O que é um programa.
+* Linguagens de programação.
+* Linguagens compiladas e interpretadas.
+* Algoritmos.
+* Lógica de programação.
+* Sequência de instruções.
+* Entrada, processamento e saída.
+* Variáveis e constantes.
+* Tipos de dados.
+* Operadores aritméticos.
+* Operadores relacionais.
+* Operadores lógicos.
+* Condições.
+* Fluxogramas.
+* Pseudocódigo.
+* Resolução de problemas.
+
+Práticas:
+
+* Criar algoritmos simples.
+* Calcular médias.
+* Criar verificadores de idade.
+* Resolver problemas matemáticos.
+* Construir fluxogramas.
+
+Dias 8 a 14 — Internet, HTML e CSS
+
+Conteúdos:
+
+* Como funciona a internet.
+* Cliente e servidor.
+* Navegadores.
+* Sites e aplicações web.
+* Domínios e DNS.
+* HTTP e HTTPS.
+* Introdução ao frontend.
+* Estrutura HTML.
+* Tags e atributos.
+* Elementos semânticos.
+* Títulos, parágrafos e listas.
+* Links e imagens.
+* Tabelas.
+* Formulários.
+* Introdução ao CSS.
+* Seletores.
+* Classes e IDs.
+* Cores.
+* Tipografia.
+* Margens e espaçamentos.
+* Box model.
+* Display.
+* Flexbox.
+* CSS Grid.
+* Responsividade.
+* Media queries.
+* Acessibilidade básica.
+
+Projeto 1: site institucional responsivo, com várias seções, navegação, imagens, formulário e adaptação para celular.
+
+MÓDULO 2 — JAVASCRIPT E PROGRAMAÇÃO NO NAVEGADOR
+
+Dias 15 a 21 — Fundamentos de JavaScript
+
+Conteúdos:
+
+* O que é JavaScript.
+* Como executar JavaScript.
+* Console.
+* Variáveis com let e const.
+* Tipos primitivos.
+* Strings.
+* Numbers.
+* Booleans.
+* Null e undefined.
+* Conversão de tipos.
+* Operadores.
+* Comparações.
+* Condicionais.
+* Switch.
+* Operadores lógicos.
+* Loops for e while.
+* Funções.
+* Parâmetros e retornos.
+* Escopo.
+* Arrow functions.
+* Debugging básico.
+
+Dias 22 a 28 — Estruturas, DOM e APIs
+
+Conteúdos:
+
+* Arrays.
+* Objetos.
+* Métodos de arrays.
+* map, filter e reduce.
+* Desestruturação.
+* Spread e rest.
+* JSON.
+* DOM.
+* Seleção de elementos.
+* Manipulação de elementos.
+* Eventos.
+* Formulários.
+* Validação de dados.
+* LocalStorage.
+* SessionStorage.
+* Promises.
+* Async e await.
+* Fetch API.
+* Tratamento de erros.
+* Introdução à orientação a objetos.
+* Classes.
+* Módulos JavaScript.
+
+Projeto 2: aplicação interativa com formulários, armazenamento local, manipulação de dados e integração com uma API.
+
+MÓDULO 3 — FERRAMENTAS PROFISSIONAIS E REACT
+
+Dias 29 a 35 — Git, GitHub e ferramentas
+
+Conteúdos:
+
+* Terminal.
+* Comandos essenciais.
+* Sistema de arquivos.
+* Git.
+* Repositórios.
+* Commits.
+* Branches.
+* Merge.
+* Resolução de conflitos.
+* GitHub.
+* Pull requests.
+* Issues.
+* README.
+* NPM.
+* package.json.
+* Dependências.
+* Scripts.
+* Vite.
+* Estrutura de projetos.
+* Variáveis de ambiente.
+
+Dias 36 a 42 — React
+
+Conteúdos:
+
+* O que é React.
+* SPA.
+* JSX.
+* Componentes.
+* Props.
+* State.
+* Eventos.
+* Renderização condicional.
+* Listas e keys.
+* Formulários controlados.
+* Hooks.
+* useState.
+* useEffect.
+* useRef.
+* useMemo e useCallback, com contexto de uso.
+* Componentização.
+* Comunicação entre componentes.
+* Context API.
+* React Router.
+* Rotas.
+* Consumo de APIs.
+* Estados de carregamento e erro.
+* Organização de componentes.
+* Introdução à gestão de estado.
+
+Projeto 3: aplicação React multipágina, com navegação, componentes reutilizáveis, formulários, integração com API e interface responsiva.
+
+MÓDULO 4 — BACKEND E DESENVOLVIMENTO DE APIs
+
+Dias 43 a 49 — Node.js e servidores
+
+Conteúdos:
+
+* O que é backend.
+* Como funciona cliente-servidor.
+* Node.js.
+* Event loop.
+* Módulos.
+* NPM.
+* Servidores HTTP.
+* Métodos HTTP.
+* Status codes.
+* Headers.
+* JSON.
+* Express.
+* Rotas.
+* Controllers.
+* Middlewares.
+* Organização de pastas.
+* Variáveis de ambiente.
+* Configuração de servidor.
+
+Dias 50 a 56 — APIs REST
+
+Conteúdos:
+
+* Arquitetura REST.
+* Endpoints.
+* CRUD.
+* GET, POST, PUT, PATCH e DELETE.
+* Parâmetros.
+* Query strings.
+* Validação.
+* Tratamento de erros.
+* Middleware de autenticação.
+* Logs.
+* Segurança básica.
+* CORS.
+* Testes de API.
+* Documentação de endpoints.
+* Postman ou ferramenta equivalente.
+
+Projeto 4: API REST completa para gerenciamento de dados, com CRUD, validação, tratamento de erros e documentação.
+
+MÓDULO 5 — BANCO DE DADOS E APLICAÇÕES FULL STACK
+
+Dias 57 a 63 — Banco de dados e SQL
+
+Conteúdos:
+
+* O que é banco de dados.
+* Banco relacional e não relacional.
+* Tabelas.
+* Colunas e registros.
+* Chaves primárias.
+* Chaves estrangeiras.
+* Relacionamentos.
+* PostgreSQL.
+* SQL.
+* CREATE.
+* INSERT.
+* SELECT.
+* UPDATE.
+* DELETE.
+* WHERE.
+* ORDER BY.
+* GROUP BY.
+* JOIN.
+* Agregações.
+* Índices.
+* Constraints.
+* Normalização.
+* Modelagem de dados.
+* Transações.
+
+Dias 64 a 70 — Integração e segurança
+
+Conteúdos:
+
+* Conectar backend ao PostgreSQL.
+* ORM e consultas.
+* Integração frontend/backend.
+* Cadastro de usuários.
+* Login.
+* Hash de senhas.
+* Sessões.
+* Cookies.
+* Tokens.
+* Autenticação.
+* Autorização.
+* Controle de acesso por função.
+* Proteção de rotas.
+* Validação no servidor.
+* SQL Injection.
+* XSS.
+* CSRF.
+* CORS.
+* Rate limiting.
+* Princípio do menor privilégio.
+* Introdução ao TypeScript.
+* Tipos.
+* Interfaces.
+* Generics.
+* Tipagem de funções.
+* TypeScript no frontend e backend.
+
+Projeto 5: sistema Full Stack com cadastro, login, permissões, banco PostgreSQL, operações CRUD e interface React.
+
+MÓDULO 6 — QUALIDADE E ENGENHARIA DE SOFTWARE
+
+Dias 71 a 77
+
+Conteúdos:
+
+* Organização de código.
+* Clean Code.
+* Separação de responsabilidades.
+* Arquitetura em camadas.
+* Modularização.
+* Padrões de projeto introdutórios.
+* Debugging.
+* Logs.
+* Testes unitários.
+* Testes de integração.
+* Testes de interface.
+* Testes de APIs.
+* Cobertura de testes.
+* Performance.
+* Otimização.
+* Acessibilidade.
+* Revisão de código.
+* CI/CD.
+* Pipelines.
+* Documentação técnica.
+* Boas práticas de equipe.
+* Revisão de segurança.
+
+Projeto 6: revisão, refatoração, testes e documentação de uma aplicação já construída.
+
+MÓDULO 7 — PROJETO FINAL E PREPARAÇÃO PROFISSIONAL
+
+Dias 78 a 90
+
+O aluno deverá planejar e construir uma aplicação Full Stack completa.
+
+Conteúdos:
+
+* Levantamento de requisitos.
+* Definição do problema.
+* Público-alvo.
+* Planejamento de funcionalidades.
+* Modelagem de banco.
+* Arquitetura.
+* Planejamento de interface.
+* Componentização.
+* Desenvolvimento frontend.
+* Desenvolvimento backend.
+* Integração com banco de dados.
+* Autenticação.
+* Autorização.
+* Validação.
+* Segurança.
+* Testes.
+* Tratamento de erros.
+* Logs.
+* Otimização.
+* Responsividade.
+* Acessibilidade.
+* Publicação.
+* Configuração de domínio.
+* HTTPS.
+* Variáveis de ambiente.
+* Backups.
+* Monitoramento.
+* Documentação.
+* README profissional.
+* GitHub.
+* Portfólio.
+* Apresentação do projeto.
+* Preparação para entrevistas técnicas.
+* Resolução de desafios de programação.
+* Organização de currículo e apresentação profissional.
+
+Projeto final obrigatório: aplicação Full Stack publicada e documentada, com frontend, backend, banco de dados, autenticação, autorização, testes e documentação.
+
+O projeto deverá ser avaliado por critérios objetivos, incluindo funcionamento, organização, segurança, qualidade de código, experiência do usuário e documentação.
+
+8. COMO O CONTEÚDO DEVE SER PRODUZIDO
+
+O currículo acima define os assuntos obrigatórios, mas cada assunto deverá ser transformado em aulas didáticas completas.
+
+Não basta criar uma página com uma lista de tópicos.
+
+Cada módulo deverá conter diversas aulas menores, com sequência pedagógica.
+
+Cada aula deverá possuir:
+
+1. Objetivos de aprendizagem.
+2. Explicação inicial para iniciantes.
+3. Desenvolvimento teórico.
+4. Conceitos fundamentais.
+5. Exemplos.
+6. Código funcional.
+7. Explicação dos códigos.
+8. Ilustrações ou diagramas quando ajudarem.
+9. Exercícios guiados.
+10. Exercícios independentes.
+11. Desafio prático.
+12. Erros comuns.
+13. Boas práticas.
+14. Resumo.
+15. Questionário.
+16. Referências e materiais complementares.
+
+Os exemplos deverão funcionar com as versões e ferramentas definidas no projeto.
+
+O conteúdo deverá ser escrito em português claro, sem pressupor que o aluno já saiba programar.
+
+Quando um conceito depender de outro, a aula deverá explicar o pré-requisito ou direcionar para a revisão correspondente.
+
+O curso deve ensinar o raciocínio, não apenas fazer o aluno copiar códigos.
+
+As aulas deverão incentivar que o aluno escreva, execute, modifique e compreenda o código.
+
+9. EXERCÍCIOS E AVALIAÇÕES
+
+A plataforma deverá suportar diferentes formatos:
+
+* Múltipla escolha.
+* Verdadeiro ou falso.
+* Respostas escritas.
+* Preenchimento de código.
+* Identificação de erros.
+* Correção de código.
+* Exercícios práticos.
+* Projetos com arquivos.
+* Entregas com links de GitHub.
+* Avaliações teóricas.
+* Avaliações práticas.
+
+A correção automática deverá ser utilizada quando for possível verificar objetivamente a resposta.
+
+Exercícios de código poderão utilizar testes automatizados em ambiente isolado, com limites de tempo, memória e permissões.
+
+Nunca executar código arbitrário de alunos diretamente no servidor principal.
+
+Projetos mais complexos poderão exigir correção administrativa ou avaliação assistida por IA.
+
+A IA deverá fornecer feedback, mas a nota oficial deverá seguir critérios definidos e auditáveis.
+
+10. PROFESSOR DE INTELIGÊNCIA ARTIFICIAL
+
+O professor de IA deverá estar disponível dentro da plataforma.
+
+Possíveis modos:
+
+Professor da aula
+
+* Conhece o conteúdo atual.
+* Explica conceitos.
+* Dá exemplos.
+* Responde dúvidas.
+
+Tutor pessoal
+
+* Considera o histórico de aprendizagem.
+* Identifica assuntos em que o aluno tem dificuldade.
+* Recomenda revisões.
+* Propõe exercícios.
+
+Ajudante de programação
+
+* Analisa trechos de código enviados.
+* Explica erros.
+* Sugere melhorias.
+* Ensina debugging.
+
+Preparação para avaliações
+
+* Cria perguntas de revisão.
+* Simula entrevistas técnicas.
+* Apresenta desafios.
+* Avalia respostas não oficiais.
+
+O aluno deverá poder consultar o histórico das conversas.
+
+A plataforma deverá identificar a formação, módulo e aula em que o aluno está para fornecer contexto adequado.
+
+A IA deverá deixar claro quando estiver incerta e não inventar resultados de execução.
+
+11. CERTIFICADOS
+
+Ao cumprir todos os requisitos, o aluno poderá emitir um certificado em PDF.
+
+O certificado deverá conter:
+
+* Nome do aluno.
+* Nome da formação.
+* Data de conclusão.
+* Identificação da DevPath Academy.
+* Código único.
+* Página de verificação.
+* QR Code ou link de verificação.
+
+A página pública deverá confirmar a validade do certificado sem revelar informações privadas desnecessárias.
+
+O certificado deverá ser descrito honestamente como certificado de conclusão emitido pela DevPath Academy, sem alegar reconhecimento oficial ou acreditação que não exista.
+
+12. RECURSOS COMPLEMENTARES
+
+Implementar, conforme prioridade:
+
+Biblioteca
+
+* PDFs.
+* Materiais complementares.
+* Links.
+* Documentação.
+* Guias.
+
+Glossário
+
+* Termos técnicos.
+* Definições.
+* Exemplos.
+* Pesquisa.
+
+Anotações
+
+* Privadas por aluno.
+* Associadas a aulas.
+* Editáveis.
+* Persistentes.
+
+Calendário
+
+* Planejamento de estudos.
+* Prazos.
+* Avaliações.
+* Lembretes.
+
+Portfólio
+
+* Projetos realizados.
+* Descrições.
+* Links.
+* Tecnologias utilizadas.
+* Evidências de aprendizagem.
+
+Revisão
+
+* Aulas concluídas.
+* Assuntos com baixo desempenho.
+* Exercícios anteriores.
+* Revisões recomendadas.
+
+Gamificação opcional
+
+* Conquistas.
+* Sequência de estudos.
+* Metas.
+* Progresso.
+* Pontos por atividades concluídas.
+
+A gamificação não deverá substituir a avaliação de conhecimento.
+
+13. TECNOLOGIA E ARQUITETURA
+
+O projeto deverá manter uma arquitetura moderna, segura e escalável.
+
+Stack de referência:
+
+* Next.js.
+* React.
+* TypeScript.
+* Tailwind CSS.
+* PostgreSQL.
+* Supabase, caso a integração atual seja mantida.
+* API de IA para o professor.
+* Sistema de armazenamento seguro para arquivos.
+* PWA.
+
+A hospedagem deverá ser em infraestrutura que permaneça ativa, sem suspensão por inatividade.
+
+Não utilizar Render Free ou outro serviço que coloque a aplicação em suspensão e provoque demora para acordar.
+
+A preferência é um VPS na Europa, com execução contínua, domínio próprio e HTTPS.
+
+O Codex deverá preparar:
+
+* Docker e Docker Compose, quando adequado.
+* Configuração de produção.
+* Proxy reverso.
+* HTTPS automático.
+* Variáveis de ambiente.
+* Backups automatizados.
+* Estratégia de restauração.
+* Logs.
+* Monitoramento.
+* Atualizações controladas.
+
+Se for mantido Supabase, avaliar o plano necessário para que o banco e os serviços não sejam pausados por inatividade. Não presumir que o plano gratuito permanecerá sempre disponível.
+
+O projeto deverá funcionar sem depender de serviços gratuitos que suspendam a aplicação.
+
+14. SEGURANÇA E PRIVACIDADE
+
+Requisitos obrigatórios:
+
+* HTTPS.
+* Senhas protegidas por mecanismo adequado.
+* Sessões seguras.
+* Validação no servidor.
+* Proteção de rotas.
+* Controle de permissões.
+* RLS corretamente configurada.
+* Isolamento dos dados de cada aluno.
+* Proteção de dados administrativos.
+* Proteção contra SQL Injection.
+* Proteção contra XSS.
+* Proteção contra CSRF quando aplicável.
+* Rate limiting.
+* Proteção de uploads.
+* Validação de arquivos.
+* Auditoria de ações administrativas.
+* Backups.
+* Gestão segura de segredos.
+* Política de privacidade.
+* Exclusão e exportação de dados conforme aplicável.
+
+Não confiar apenas em verificações feitas no frontend.
+
+O aluno não poderá alterar a própria nota, aprovar a própria atividade, modificar seu papel ou desbloquear módulos manualmente.
+
+Ações administrativas deverão ser autorizadas e registradas no servidor.
+
+15. EXPERIÊNCIA E ACESSIBILIDADE
+
+A plataforma deverá:
+
+* Funcionar em computadores e celulares.
+* Ter navegação intuitiva.
+* Apresentar estados de carregamento.
+* Informar erros claramente.
+* Evitar perda de progresso.
+* Salvar respostas e anotações com segurança.
+* Ter boa legibilidade.
+* Suportar navegação por teclado.
+* Respeitar boas práticas de acessibilidade.
+* Possuir páginas de erro adequadas.
+* Ter desempenho consistente.
+
+Não utilizar telas falsas ou botões sem funcionalidade.
+
+16. BANCO DE DADOS
+
+O modelo deverá suportar, no mínimo, entidades equivalentes a:
+
+* Usuários.
+* Perfis.
+* Papéis e permissões.
+* Convites.
+* Formações.
+* Matrículas.
+* Módulos.
+* Aulas.
+* Seções de aula.
+* Materiais.
+* Atividades.
+* Questões.
+* Alternativas.
+* Entregas.
+* Tentativas.
+* Correções.
+* Notas.
+* Progresso.
+* Requisitos de desbloqueio.
+* Anotações.
+* Conversas com IA.
+* Certificados.
+* Portfólio.
+* Notificações.
+* Registros de auditoria.
+
+Criar relacionamentos e índices adequados.
+
+Toda alteração de estrutura deverá utilizar migrations versionadas.
+
+17. TESTES E VALIDAÇÃO
+
+Criar testes para:
+
+* Cadastro por convite.
+* Convites expirados.
+* Convites revogados.
+* Login.
+* Recuperação de senha.
+* Permissões.
+* Isolamento de alunos.
+* RLS.
+* Acesso administrativo.
+* Acesso de aluno.
+* Criação de módulos.
+* Criação de aulas.
+* Entregas.
+* Correções.
+* Cálculo de notas.
+* Tentativas.
+* Recuperação.
+* Desbloqueio.
+* Certificados.
+* Integração com IA.
+* Uploads.
+* Responsividade.
+* Fluxos principais.
+
+Executar testes unitários, integração e ponta a ponta quando aplicável.
+
+Build sem erros não é prova suficiente de que a plataforma funciona.
+
+Validar fluxos reais em ambiente de teste conectado aos serviços necessários.
+
+18. REGRAS DE IMPLEMENTAÇÃO PARA O CODEX
+
+Antes de modificar o projeto:
+
+1. Inspecionar todos os arquivos existentes.
+2. Entender a arquitetura.
+3. Identificar funcionalidades implementadas.
+4. Identificar funcionalidades incompletas.
+5. Identificar problemas de segurança.
+6. Comparar o projeto com este documento.
+7. Apresentar um relatório de diferenças.
+
+Não apagar funcionalidades existentes sem justificativa.
+
+Não reescrever toda a aplicação sem necessidade.
+
+Não substituir serviços ou tecnologias sem explicar a razão.
+
+Não criar dados falsos para fingir que uma integração funciona.
+
+Não marcar uma funcionalidade como concluída apenas porque existe uma tela.
+
+Toda funcionalidade deverá ter implementação real e validação.
+
+Ordem de implementação
+
+FASE 1 — Auditoria e estabilidade.
+FASE 2 — Fundação técnica e arquitetura.
+FASE 3 — Autenticação, convites e permissões.
+FASE 4 — Banco de dados e segurança.
+FASE 5 — Painel de aluno.
+FASE 6 — Painel administrativo.
+FASE 7 — Editor e gestão pedagógica.
+FASE 8 — Motor de avaliações e desbloqueios.
+FASE 9 — Produção completa do conteúdo do bootcamp.
+FASE 10 — Professor de IA.
+FASE 11 — Certificados.
+FASE 12 — Biblioteca, glossário, portfólio e recursos complementares.
+FASE 13 — Testes, segurança e otimização.
+FASE 14 — Preparação e publicação em VPS.
+
+Cada fase deverá ser concluída e testada antes de avançar.
+
+Produção do conteúdo pedagógico
+
+Não criar apenas os títulos dos 90 dias.
+
+Produzir as aulas completas, com explicações, exemplos, códigos, exercícios, avaliações e projetos.
+
+O conteúdo deverá ser armazenado de forma estruturada no banco ou em um sistema de conteúdo apropriado.
+
+O administrador deverá poder editar e atualizar o conteúdo sem precisar modificar o código-fonte da aplicação.
+
+A produção deverá ser organizada em lotes para permitir revisão e validação pedagógica.
+
+O curso deverá manter coerência entre aulas, atividades, provas e projetos.
+
+Critérios finais de aceitação
+
+A DevPath Academy só deverá ser considerada pronta quando:
+
+* O aluno conseguir criar conta por convite.
+* Conseguir entrar e recuperar a senha.
+* Conseguir estudar e acompanhar o próprio progresso.
+* Conseguir enviar atividades.
+* Conseguir receber correções.
+* O sistema calcular notas corretamente.
+* Os módulos forem liberados conforme os requisitos.
+* O administrador conseguir gerenciar alunos e conteúdo.
+* O administrador também conseguir estudar como aluno.
+* O professor de IA funcionar com uma integração real.
+* O bootcamp possuir conteúdo didático completo.
+* Os projetos e avaliações funcionarem.
+* O certificado puder ser emitido e verificado.
+* Os dados estiverem protegidos.
+* Os testes principais passarem.
+* A aplicação estiver publicada em infraestrutura sem suspensão por inatividade.
+* Existirem backups e um procedimento de recuperação.
+
+19. RESULTADO ESPERADO
+
+Quero uma plataforma educacional completa, profissional, funcional e preparada para crescer.
+
+O primeiro curso deve ser uma formação Full Stack de 90 dias, com conteúdo profundo, prática constante, projetos reais e acompanhamento.
+
+O aluno deve entrar sem saber programar e sair com capacidade de desenvolver e publicar aplicações completas, compreender o próprio código e continuar aprendendo de forma independente.
+
+A prioridade é a qualidade real do ensino, a funcionalidade da plataforma, a segurança e a experiência do aluno.
+
+Não reduzir o escopo para entregar apenas uma demonstração visual. Não considerar conteúdo vazio como curso concluído. Não considerar telas sem integração como funcionalidades prontas.

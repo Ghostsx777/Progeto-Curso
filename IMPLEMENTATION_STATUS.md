@@ -7,6 +7,7 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 - Fundação Next.js, TypeScript, Tailwind e layout dark responsivo; página inicial preservada.
 - Supabase SSR, proteção server-side, login/logout, confirmação e recuperação de senha.
 - Convites com hash, expiração, revogação, email opcional e consumo transacional no trigger Auth.
+- Convites com data/hora precisa, estados disponível/utilizado/expirado/revogado, conta consumidora e datas completas; consumo/revogação irreversíveis e rollback de cadastro testado localmente.
 - Inicialização privada de um único proprietário.
 - Painéis com consultas reais, formação, aulas Markdown, anotações privadas, submissões e histórico.
 - Gestão de convites, pesquisa de alunos, bloqueio, correção manual e exceções justificadas.
@@ -19,10 +20,11 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 - Ainda não há Supabase configurado: login real, emails, bootstrap e fluxos completos não foram validados nesse serviço.
 - Testes locais usam PostgreSQL PGlite e esquema Auth mínimo.
 - Não houve revisão visual em navegador ou testes completos de acessibilidade/dispositivos.
-- Não houve deploy, domínio, backups ou operação em produção.
+- Não houve deploy, domínio, backups ou operação em produção. A nova preferência de hospedagem é VPS na Europa, sem suspensão por inatividade; a preparação operacional está pendente.
 
 ## Falta para cumprir o documento mestre
 - Configuração avançada de regras, versionamento de cursos em andamento e criação de outras formações pela interface.
+- Matrículas e experiência do administrador como aluno, com progressão equivalente e sem autoaprovação oficial; o acesso administrativo atual não equivale a essa experiência.
 - Currículo didático completo de 234 horas, exercícios, provas, projetos e recuperação.
 - Correção automática e execução isolada de código.
 - Relatórios e perfil detalhado, inatividade e notificações.
@@ -35,7 +37,10 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 Não considerar etapas dependentes de serviços concluídas só porque o build passa. Não admitir alunos reais ainda.
 
 ## Verificações locais desta versão
-- 14 testes de regras, validação e PostgreSQL/RLS; dados exclusivamente fictícios.
+- 21 testes de regras, validação e PostgreSQL/RLS; dados exclusivamente fictícios. Rollback e reutilização foram testados, mas concorrência multi-conexão e Supabase Auth real continuam pendentes.
 - Build de produção com verificação TypeScript.
 - Páginas públicas responderam HTTP 200; áreas privadas redirecionaram ao login no ambiente sem Supabase.
 - Repositório conectado a Ghostsx777/Progeto-Curso. A pasta de trabalho atual é devpath-github; devpath-academy contém a cópia anterior à ligação ao GitHub.
+
+## Nova referência de produto
+O anexo recebido está preservado em `docs/MASTER_SPECIFICATION_REFERENCE.txt`. A comparação com o código e a precedência da regra de convite de uso único estão em `docs/SPECIFICATION_AUDIT.md`. Nenhuma exceção de reutilização de convite será implementada.

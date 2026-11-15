@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {redirect} from 'next/navigation';
 import {database,serviceDatabase,configured} from '@/lib/supabase';
 import type {FormState} from '@/components/action-form';
+import {invalidInviteMessage} from '@/lib/invites';
 const email=z.email().max(254);const password=z.string().min(12).max(128);
 export async function login(_:FormState,form:FormData):Promise<FormState>{
  if(!configured())return {error:'O proprietário ainda precisa configurar o Supabase.'};
@@ -21,10 +22,16 @@ export async function register(_:FormState,form:FormData):Promise<FormState>{
  const input=parsed.data;const hash=createHash('sha256').update(input.token).digest('hex');
  const db=serviceDatabase();
  // A verificação prévia evita chamadas Auth inúteis. O trigger repete a validação sob lock.
- const {data:invite}=await db.from('invites').select('id,email').eq('token_hash',hash).is('used_at',null).is('revoked_at',null).gt('expires_at',new Date().toISOString()).maybeSingle();
- if(!invite||(invite.email&&invite.email.toLowerCase()!==input.email.toLowerCase()))return {error:'Convite inválido, expirado, utilizado ou associado a outro email.'};
+ const {data:invite,error:lookupError}=await db.from('invites').select('id,email,used_at,revoked_at,expires_at').eq('token_hash',hash).maybeSingle();
+ if(lookupError)return {error:'Não foi possível validar o convite agora. Tente novamente.'};
+ const invalid=invalidInviteMessage(invite);if(invalid)return {error:invalid};
+ if(!invite||(invite.email&&invite.email.toLowerCase()!==input.email.toLowerCase()))return {error:'Este convite está associado a outro email.'};
  const {error}=await db.auth.admin.createUser({email:input.email,password:input.password,email_confirm:false,user_metadata:{full_name:input.full_name},app_metadata:{invite_hash:hash}});
- if(error)return {error:'Não foi possível concluir o cadastro. Verifique o convite e contacte o administrador.'};
+ if(error){
+   // Outro cadastro pode ter consumido/revogado o convite entre a prévia e o trigger.
+   const {data:latest}=await db.from('invites').select('used_at,revoked_at,expires_at').eq('token_hash',hash).maybeSingle();
+   return {error:invalidInviteMessage(latest)||'Não foi possível concluir o cadastro. Verifique os dados ou contacte o administrador.'};
+ }
  // A confirmação de email é enviada pelo serviço Auth; nunca confirmar emails arbitrariamente.
  const userDb=await database();
  const {error:mailError}=await userDb.auth.resend({type:'signup',email:input.email,options:{emailRedirectTo:process.env.NEXT_PUBLIC_APP_URL+'/auth/confirm'}});

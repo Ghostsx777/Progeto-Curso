@@ -15,7 +15,7 @@ before(async()=>{
  create table auth.users(id uuid primary key,email text,raw_app_meta_data jsonb default '{}',raw_user_meta_data jsonb default '{}');
  create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
  grant usage on schema public,auth to anon,authenticated,service_role;grant execute on function auth.uid() to public;`);
- for(const file of ['001_initial_schema.sql','002_security_hardening.sql','003_functional_core.sql','004_content_management.sql']){
+ for(const file of ['001_initial_schema.sql','002_security_hardening.sql','003_functional_core.sql','004_content_management.sql','005_invite_lifecycle.sql']){
    // PGlite possui gen_random_uuid nativo; pgcrypto não é usado pelo código SQL.
    await db.exec(readFileSync(new URL('../supabase/migrations/'+file,import.meta.url),'utf8').replace('create extension if not exists pgcrypto;',''));
  }
@@ -121,4 +121,51 @@ test('edição preserva critérios e dados de cursos já utilizados',async()=>{
  await asUser(admin,'select public.save_content($1,$2)',['lesson',{...l,body_md:'Explicação corrigida e revisada. '.repeat(20)}]);
  assert.equal((await asUser(a,'select * from public.lesson_progress where lesson_id=$1',[lesson])).rows.length,1);
  assert.equal(Number((await db.query<{final_grade:string}>('select final_grade from public.student_module_progress where student_id=$1 and module_id=$2',[a,m1])).rows[0].final_grade),80);
+});
+
+test('convite armazena data/hora exata e só administrador pode criá-lo',async()=>{
+ const deadline='2099-11-20T15:37:00.000Z';
+ await assert.rejects(asUser(a,'select public.create_invite_at($1,$2,null)',['5'.repeat(64),deadline]));
+ const created=await asUser<{id:string}>(admin,'select public.create_invite_at($1,$2,$3) as id',['5'.repeat(64),deadline,'Student@Test.Invalid']);
+ const row=(await db.query<{expires_at:Date|string;email:string}>('select expires_at,email from public.invites where id=$1',[created.rows[0].id])).rows[0];
+ assert.equal(new Date(row.expires_at).toISOString(),deadline);
+ assert.equal(row.email,'student@test.invalid');
+ await assert.rejects(asUser(admin,'select public.create_invite_at($1,$2,null)',['6'.repeat(64),'2000-01-01T00:00:00Z']));
+ await assert.rejects(asUser(admin,"select public.create_invite_at($1,'infinity',null)",['6'.repeat(64)]));
+});
+test('falha após criação de perfil e consumo reverte conta, convite e auditoria',async()=>{
+ const hash='7'.repeat(64),uid='10000000-0000-0000-0000-000000000077';
+ const created=await asUser<{id:string}>(admin,'select public.create_invite_at($1,$2,null) as id',[hash,'2099-11-20T15:37:00Z']);
+ await assert.rejects(db.transaction(async tx=>{
+   await tx.query("insert into auth.users(id,email,raw_app_meta_data) values($1,'rollback@example.invalid',$2)",[uid,JSON.stringify({invite_hash:hash})]);
+   // O trigger já consumiu o convite, mas o cadastro ainda não terminou a transação.
+   const inside=await tx.query<{used_by:string}>('select used_by from public.invites where id=$1',[created.rows[0].id]);
+   assert.equal(inside.rows[0].used_by,uid);
+   throw new Error('Simulação de falha do cadastro antes do COMMIT');
+ }));
+ assert.equal((await db.query('select id from auth.users where id=$1',[uid])).rows.length,0);
+ assert.equal((await db.query('select id from public.profiles where id=$1',[uid])).rows.length,0);
+ const reverted=(await db.query('select used_at,used_by from public.invites where id=$1',[created.rows[0].id])).rows[0];
+ assert.deepEqual(reverted,{used_at:null,used_by:null});
+ assert.equal((await db.query("select id from public.audit_log where action='invite.accepted' and target_id=$1",[created.rows[0].id])).rows.length,0);
+ await db.query("insert into auth.users(id,email,raw_app_meta_data) values($1,'retry@example.invalid',$2)",[uid,JSON.stringify({invite_hash:hash})]);
+ await assert.rejects(db.query("insert into auth.users(id,email,raw_app_meta_data) values(gen_random_uuid(),'second@example.invalid',$1)",[JSON.stringify({invite_hash:hash})]));
+ const consumed=(await db.query<{used_by:string}>('select used_by from public.invites where id=$1',[created.rows[0].id])).rows[0];
+ assert.equal(consumed.used_by,uid);
+ await assert.rejects(db.query('update public.invites set used_at=null,used_by=null where id=$1',[created.rows[0].id]));
+});
+test('revogação é imediata e permanente, sem alterar registro ao repetir',async()=>{
+ const hash='8'.repeat(64);
+ const created=await asUser<{id:string}>(admin,'select public.create_invite_at($1,$2,null) as id',[hash,'2099-11-20T15:37:00Z']);
+ await asUser(admin,'select public.revoke_invite($1)',[created.rows[0].id]);
+ await asUser(admin,'select public.revoke_invite($1)',[created.rows[0].id]);
+ await assert.rejects(db.query("insert into auth.users(id,email,raw_app_meta_data) values(gen_random_uuid(),'revoked@example.invalid',$1)",[JSON.stringify({invite_hash:hash})]));
+ await assert.rejects(db.query('update public.invites set revoked_at=null where id=$1',[created.rows[0].id]));
+ assert.equal((await db.query("select id from public.audit_log where action='invite.revoked' and target_id=$1",[created.rows[0].id])).rows.length,1);
+});
+test('prazo é reavaliado no instante de consumo mesmo numa transação já iniciada',async()=>{
+ await assert.rejects(db.transaction(async tx=>{
+   await tx.query("insert into public.invites(token_hash,created_by,expires_at) values($1,$2,clock_timestamp())",['9'.repeat(64),admin]);
+   await tx.query("insert into auth.users(id,email,raw_app_meta_data) values(gen_random_uuid(),'deadline@example.invalid',$1)",[JSON.stringify({invite_hash:'9'.repeat(64)})]);
+ }));
 });

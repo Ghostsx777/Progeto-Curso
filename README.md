@@ -17,7 +17,7 @@ Node.js 24 LTS recomendado. Execute `npm ci` e `npm run dev`, depois abra http:/
 5. Defina temporariamente ADMIN_EMAIL, ADMIN_PASSWORD (12+ caracteres) e ADMIN_NAME no ambiente privado. Execute `npm run bootstrap`. Remova ADMIN_PASSWORD após o uso. O banco impede dois proprietários.
 6. Entre em `/login`, abra `/admin` e gere um convite. Compartilhe o link manualmente com o aluno. Teste os fluxos com contas fictícias antes de usar dados reais.
 
-A criação Auth consome o convite na mesma transação PostgreSQL. Token aleatório de 32 bytes; somente SHA-256 no banco. Emails de alunos não são confirmados arbitrariamente pelo servidor.
+A criação Auth consome o convite na mesma transação PostgreSQL. Token aleatório de 32 bytes; somente SHA-256 no banco. Emails de alunos não são confirmados arbitrariamente pelo servidor. A migração 005 acrescenta data/hora exata, histórico completo e irreversibilidade de consumo/revogação. Falhas na transação do cadastro não consomem o convite; falha posterior no envio de email não desfaz uma conta já criada.
 
 ## Testar
 
@@ -27,7 +27,7 @@ Os testes usam PostgreSQL embarcado PGlite com roles e RLS reais; somente o esqu
 
 ## Hospedagem posterior
 
-CI no GitHub executa testes e build, sem deploy. O projeto suporta Vercel + Supabase ou servidor Node.js próprio. GitHub Pages não executa Server Actions. A publicação não foi autorizada e não foi realizada. Configure HTTPS, backups, SMTP e monitorização antes da produção.
+CI no GitHub executa testes e build, sem deploy. A preferência atual do proprietário é VPS na Europa, com operação contínua, domínio e HTTPS. O Next.js é independente e pode executar em servidor Node.js próprio; Docker, proxy reverso, backups e restauração ainda precisam ser preparados/testados. GitHub Pages não executa Server Actions. A publicação não foi autorizada e não foi realizada. Configure HTTPS, backups, SMTP e monitorização antes da produção.
 
 O Supabase gratuito pode pausar por inatividade: https://supabase.com/docs/guides/platform/free-project-pausing . Não há promessa de disponibilidade contínua em planos gratuitos.
 
