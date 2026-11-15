@@ -1,0 +1,2 @@
+'use client';
+export default function ErrorPage({reset}:{reset:()=>void}){return <main className="auth"><div className="card stack"><h1 className="heading">Não foi possível carregar.</h1><p className="muted">Verifique a conexão e a configuração do serviço. Nenhum resultado foi simulado.</p><button className="btn" onClick={reset}>Tentar novamente</button><a href="/">Voltar ao início</a></div></main>;}
