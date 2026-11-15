@@ -15,7 +15,7 @@ before(async()=>{
  create table auth.users(id uuid primary key,email text,raw_app_meta_data jsonb default '{}',raw_user_meta_data jsonb default '{}');
  create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
  grant usage on schema public,auth to anon,authenticated,service_role;grant execute on function auth.uid() to public;`);
- for(const file of ['001_initial_schema.sql','002_security_hardening.sql','003_functional_core.sql']){
+ for(const file of ['001_initial_schema.sql','002_security_hardening.sql','003_functional_core.sql','004_content_management.sql']){
    // PGlite possui gen_random_uuid nativo; pgcrypto não é usado pelo código SQL.
    await db.exec(readFileSync(new URL('../supabase/migrations/'+file,import.meta.url),'utf8').replace('create extension if not exists pgcrypto;',''));
  }
@@ -84,4 +84,41 @@ test('bloqueio de conta impede leitura e mutações mesmo com sessão existente'
 test('certificado não é emitido com formação incompleta',async()=>{
  const course=await db.query<{id:string}>('select id from public.courses');
  await assert.rejects(asUser(admin,'select public.issue_certificate($1,$2)',[a,course.rows[0].id]));
+});
+
+test('editor rejeita alterações de aluno e publicação sem conteúdo',async()=>{
+ const course=(await db.query<{id:string}>('select id from public.courses')).rows[0].id;
+ const module={id:'',course_id:course,title:'Módulo indevido',slug:'modulo-indevido',sort_order:9,pass_mark:70,published:false};
+ await assert.rejects(asUser(a,'select public.save_content($1,$2)',['module',module]));
+ await assert.rejects(asUser(admin,'select public.save_content($1,$2)',['lesson',{id:'',module_id:m2,title:'Aula sem conteúdo',sort_order:2,estimated_minutes:45,published:true,body_md:''}]));
+ assert.equal((await db.query("select id from public.lessons where title='Aula sem conteúdo'")).rows.length,0);
+});
+test('editor cria/edita rascunhos, publica conteúdo e mantém auditoria',async()=>{
+ const course=(await db.query<{id:string}>("insert into public.courses(slug,title) values('editor-test','Curso do editor') returning id")).rows[0].id;
+ const payload={id:'',course_id:course,title:'Módulo de teste',slug:'editor-test',sort_order:1,pass_mark:70,published:false,description:'Descrição do curso',preview:'Objetivos'};
+ const created=await asUser<{id:string}>(admin,'select public.save_content($1,$2) as id',['module',payload]);
+ const mid=created.rows[0].id;
+ const lessonPayload={id:'',module_id:mid,title:'Aula de teste',sort_order:1,estimated_minutes:45,required:true,published:false,body_md:'## Conteúdo\n\n'+('Explicação pedagógica detalhada. '.repeat(10))};
+ const lessonCreated=await asUser<{id:string}>(admin,'select public.save_content($1,$2) as id',['lesson',lessonPayload]);
+ await asUser(admin,'select public.save_content($1,$2)',['activity',{id:'',module_id:mid,title:'Exercício de teste',sort_order:1,activity_type:'exercise',max_attempts:3,required:true,published:true,instructions_md:'Implemente a solução e explique os testes que você executou.'}]);
+ assert.equal((await asUser(a,'select id from public.lessons where module_id=$1',[mid])).rows.length,0);
+ await asUser(admin,'select public.save_content($1,$2)',['lesson',{...lessonPayload,id:lessonCreated.rows[0].id,published:true}]);
+ await asUser(admin,'select public.save_content($1,$2)',['module',{...payload,id:mid,published:true}]);
+ assert.equal((await asUser(a,'select id from public.lessons where module_id=$1',[mid])).rows.length,1);
+ const log=await asUser(admin,"select details from public.audit_log where target_id=$1 and action='content.updated'",[mid]);
+ assert.equal(log.rows.length,1);
+ assert.equal((await asUser(a,'select * from public.audit_log')).rows.length,0);
+ const activity=(await db.query<{id:string}>('select id from public.activities where module_id=$1',[mid])).rows[0].id;
+ await asUser(a,"select public.submit_activity($1,'Entrega antes de marcar aulas',null)",[activity]);
+ await assert.rejects(asUser(admin,'select public.save_content($1,$2)',['module',{...payload,id:mid,published:true,pass_mark:90}]));
+});
+test('edição preserva critérios e dados de cursos já utilizados',async()=>{
+ const module=(await db.query<Record<string,unknown>>('select * from public.modules where id=$1',[m1])).rows[0];
+ await assert.rejects(asUser(admin,'select public.save_content($1,$2)',['module',{...module,pass_mark:90}]));
+ await assert.rejects(asUser(admin,'select public.save_content($1,$2)',['module',{...module,sort_order:10}]));
+ const l=(await db.query<Record<string,unknown>>('select * from public.lessons where id=$1',[lesson])).rows[0];
+ await assert.rejects(asUser(admin,'select public.save_content($1,$2)',['lesson',{...l,required:false,body_md:'Conteúdo didático '.repeat(20)}]));
+ await asUser(admin,'select public.save_content($1,$2)',['lesson',{...l,body_md:'Explicação corrigida e revisada. '.repeat(20)}]);
+ assert.equal((await asUser(a,'select * from public.lesson_progress where lesson_id=$1',[lesson])).rows.length,1);
+ assert.equal(Number((await db.query<{final_grade:string}>('select final_grade from public.student_module_progress where student_id=$1 and module_id=$2',[a,m1])).rows[0].final_grade),80);
 });

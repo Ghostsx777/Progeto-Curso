@@ -10,6 +10,8 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 - Inicialização privada de um único proprietário.
 - Painéis com consultas reais, formação, aulas Markdown, anotações privadas, submissões e histórico.
 - Gestão de convites, pesquisa de alunos, bloqueio, correção manual e exceções justificadas.
+- Editor administrativo de módulos, aulas Markdown com pré-visualização e atividades; rascunhos/publicação, ordenação e auditoria. Critérios e estrutura são protegidos quando já existem progresso ou entregas.
+- Página administrativa de histórico com as 100 ações mais recentes.
 - Migração 003: cursos, isolamento, progressão no banco, recuperação, auditoria e funções de certificados.
 - Testes PostgreSQL/RLS e regras pedagógicas; CI sem publicação.
 
@@ -20,7 +22,7 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 - Não houve deploy, domínio, backups ou operação em produção.
 
 ## Falta para cumprir o documento mestre
-- Editor administrativo de conteúdos e regras do curso.
+- Configuração avançada de regras, versionamento de cursos em andamento e criação de outras formações pela interface.
 - Currículo didático completo de 234 horas, exercícios, provas, projetos e recuperação.
 - Correção automática e execução isolada de código.
 - Relatórios e perfil detalhado, inatividade e notificações.
@@ -31,3 +33,9 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 - Backups testados, privacidade/retenção, monitorização e publicação autorizada.
 
 Não considerar etapas dependentes de serviços concluídas só porque o build passa. Não admitir alunos reais ainda.
+
+## Verificações locais desta versão
+- 14 testes de regras, validação e PostgreSQL/RLS; dados exclusivamente fictícios.
+- Build de produção com verificação TypeScript.
+- Páginas públicas responderam HTTP 200; áreas privadas redirecionaram ao login no ambiente sem Supabase.
+- Repositório conectado a Ghostsx777/Progeto-Curso. A pasta de trabalho atual é devpath-github; devpath-academy contém a cópia anterior à ligação ao GitHub.
