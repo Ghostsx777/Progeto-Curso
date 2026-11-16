@@ -1,6 +1,6 @@
 import {test,before,after} from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,readdirSync} from 'node:fs';
 import {PGlite} from '@electric-sql/pglite';
 const db=new PGlite();
 const admin='10000000-0000-0000-0000-000000000001',a='10000000-0000-0000-0000-000000000002',b='10000000-0000-0000-0000-000000000003';
@@ -15,7 +15,7 @@ before(async()=>{
  create table auth.users(id uuid primary key,email text,raw_app_meta_data jsonb default '{}',raw_user_meta_data jsonb default '{}');
  create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
  grant usage on schema public,auth to anon,authenticated,service_role;grant execute on function auth.uid() to public;`);
- for(const file of ['001_initial_schema.sql','002_security_hardening.sql','003_functional_core.sql','004_content_management.sql','005_invite_lifecycle.sql']){
+ for(const file of readdirSync(new URL('../supabase/migrations/',import.meta.url)).filter(f=>f.endsWith('.sql')).sort()){
    // PGlite possui gen_random_uuid nativo; pgcrypto não é usado pelo código SQL.
    await db.exec(readFileSync(new URL('../supabase/migrations/'+file,import.meta.url),'utf8').replace('create extension if not exists pgcrypto;',''));
  }
@@ -24,6 +24,9 @@ before(async()=>{
    await db.query("insert into public.invites(token_hash,created_by,expires_at) values($1,$2,now()+interval '1 day')",[String(index+1).repeat(64),admin]);
    await db.query('insert into auth.users(id,email,raw_app_meta_data) values($1,$2,$3)',[id,`student${index}@example.invalid`,JSON.stringify({invite_hash:String(index+1).repeat(64)})]);
  }
+ await db.exec('update public.courses set published=true');
+ const cid=(await db.query<{id:string}>('select id from public.courses')).rows[0].id;
+ for(const uid of [a,b,admin])await asUser(uid,'select public.enroll_course($1)',[cid]);
  await db.query("insert into public.modules(id,course_id,slug,title,sort_order,published) select $1,id,'fundamentos','Fundamentos',1,true from public.courses",[m1]);
  await db.query("insert into public.modules(id,course_id,slug,title,sort_order,published) select $1,id,'javascript','JavaScript',2,true from public.courses",[m2]);
  await db.query("insert into public.lessons(id,module_id,title,sort_order,published) values($1,$2,'Primeira aula',1,true)",[lesson,m1]);
@@ -94,7 +97,8 @@ test('editor rejeita alterações de aluno e publicação sem conteúdo',async()
  assert.equal((await db.query("select id from public.lessons where title='Aula sem conteúdo'")).rows.length,0);
 });
 test('editor cria/edita rascunhos, publica conteúdo e mantém auditoria',async()=>{
- const course=(await db.query<{id:string}>("insert into public.courses(slug,title) values('editor-test','Curso do editor') returning id")).rows[0].id;
+ const course=(await db.query<{id:string}>("insert into public.courses(slug,title,published) values('editor-test','Curso do editor',true) returning id")).rows[0].id;
+ await asUser(a,'select public.enroll_course($1)',[course]);
  const payload={id:'',course_id:course,title:'Módulo de teste',slug:'editor-test',sort_order:1,pass_mark:70,published:false,description:'Descrição do curso',preview:'Objetivos'};
  const created=await asUser<{id:string}>(admin,'select public.save_content($1,$2) as id',['module',payload]);
  const mid=created.rows[0].id;
@@ -168,4 +172,73 @@ test('prazo é reavaliado no instante de consumo mesmo numa transação já inic
    await tx.query("insert into public.invites(token_hash,created_by,expires_at) values($1,$2,clock_timestamp())",['9'.repeat(64),admin]);
    await tx.query("insert into auth.users(id,email,raw_app_meta_data) values(gen_random_uuid(),'deadline@example.invalid',$1)",[JSON.stringify({invite_hash:'9'.repeat(64)})]);
  }));
+});
+
+test('administrador estuda com matrícula e progressão, sem corrigir a própria entrega',async()=>{
+ assert.equal((await asUser(admin,'select public.can_study_module($1) as access',[m1])).rows[0].access,true);
+ assert.equal((await asUser(admin,'select public.can_study_module($1) as access',[m2])).rows[0].access,false);
+ const lockedLesson=(await db.query<{id:string}>('select id from public.lessons where module_id=$1',[m2])).rows[0].id;
+ await assert.rejects(asUser(admin,'select public.lesson_event($1,true,30)',[lockedLesson]));
+ const sub=await asUser<{id:string}>(admin,"select public.submit_activity($1,'Minha entrega como estudante',null) as id",[ids[1]]);
+ await assert.rejects(asUser(admin,"select public.grade_submission($1,100,'Tentativa de autoaprovação','approved')",[sub.rows[0].id]));
+ assert.equal((await db.query<{grade:null}>('select grade from public.submissions where id=$1',[sub.rows[0].id])).rows[0].grade,null);
+});
+test('matrículas são isoladas e não concedem acesso a cursos sem inscrição',async()=>{
+ const course=(await db.query<{id:string}>("insert into public.courses(slug,title,published) values('separate','Outra formação',true) returning id")).rows[0].id;
+ const mid=(await db.query<{id:string}>("insert into public.modules(course_id,slug,title,sort_order,published) values($1,'separate-module','Outro módulo',1,true) returning id",[course])).rows[0].id;
+ assert.equal((await asUser(a,'select public.can_study_module($1) as access',[mid])).rows[0].access,false);
+ await asUser(a,'select public.enroll_course($1)',[course]);
+ await asUser(a,'select public.enroll_course($1)',[course]);
+ assert.equal((await asUser(a,'select public.can_study_module($1) as access',[mid])).rows[0].access,true);
+ assert.equal((await asUser(a,'select * from public.enrollments where student_id=$1',[admin])).rows.length,0);
+ await db.query("update public.enrollments set status='suspended' where student_id=$1 and course_id=$2",[a,course]);
+ assert.equal((await asUser(a,'select public.can_study_module($1) as access',[mid])).rows[0].access,false);
+ await assert.rejects(asUser(a,'select public.enroll_course($1)',[course]));
+});
+
+test('tutor mantém conversas privadas e somente serviço grava respostas',async()=>{
+ const reserved=await asUser<{id:string}>(a,"select public.reserve_tutor($1,'Explique a entrada e saída de um algoritmo.') as id",[lesson]);
+ assert.equal((await asUser(b,'select * from public.tutor_messages')).rows.length,0);
+ assert.equal((await asUser(admin,'select * from public.tutor_messages')).rows.length,0);
+ await assert.rejects(asUser(a,"select public.finish_tutor($1,'Resposta forjada',1,1)",[reserved.rows[0].id]));
+ await db.exec('set role service_role');
+ try{await db.query("select public.finish_tutor($1,'Entrada são os dados; saída é o resultado produzido.',20,15)",[reserved.rows[0].id]);}finally{await db.exec('reset role');}
+ assert.equal((await asUser(a,'select * from public.tutor_messages')).rows.length,2);
+ assert.equal((await asUser(b,'select * from public.tutor_messages')).rows.length,0);
+ await assert.rejects(asUser(a,"select public.reserve_tutor($1,'Outra pergunta imediatamente')",[lesson]),/Aguarde/);
+});
+test('tutor recusa aulas bloqueadas e impõe cota diária persistente',async()=>{
+ const locked=(await db.query<{id:string}>('select id from public.lessons where module_id=$1',[m2])).rows[0].id;
+ await assert.rejects(asUser(admin,"select public.reserve_tutor($1,'Não deveria acessar o conteúdo futuro')",[locked]),/indisponível/);
+ // A cota é mantida no banco, não na memória de uma instância de hospedagem.
+ await db.query("update public.tutor_requests set created_at=now()-interval '1 hour' where student_id=$1",[a]);
+ const existing=Number((await db.query<{n:string}>('select count(*) n from public.tutor_requests where student_id=$1',[a])).rows[0].n);
+ await db.query("insert into public.tutor_requests(student_id,lesson_id,created_at,status) select $1,$2,now()-interval '1 hour','failed' from generate_series(1,$3)",[a,lesson,20-existing]);
+ // Normaliza para o dia atual sem atingir o intervalo de 10 segundos.
+ await db.query("update public.tutor_requests set created_at=date_trunc('day',now() at time zone 'UTC') at time zone 'UTC' where student_id=$1",[a]);
+ await assert.rejects(asUser(a,"select public.reserve_tutor($1,'Pergunta acima do limite diário')",[lesson]),/Limite diário/);
+});
+test('capacidade permite dez contas incluindo proprietário e rejeita a décima primeira sem consumir convite',async()=>{
+ const count=Number((await db.query<{n:string}>('select count(*) n from public.profiles')).rows[0].n);
+ let lastHash='';
+ await assert.rejects(db.transaction(async tx=>{
+   for(let i=count;i<=10;i++){
+     const hash=(100+i).toString(16).padStart(64,'0');lastHash=hash;
+     await tx.query("insert into public.invites(token_hash,created_by,expires_at) values($1,$2,now()+interval '1 day')",[hash,admin]);
+     await tx.query('insert into auth.users(id,email,raw_app_meta_data) values(gen_random_uuid(),$1,$2)',[`capacity${i}@example.invalid`,JSON.stringify({invite_hash:hash})]);
+     assert.equal(Number((await tx.query<{n:string}>('select count(*) n from public.profiles')).rows[0].n),i+1);
+   }
+ }),/limite de 10 contas/);
+ assert.equal(Number((await db.query<{n:string}>('select count(*) n from public.profiles')).rows[0].n),count);
+ assert.equal((await db.query('select id from public.invites where token_hash=$1',[lastHash])).rows.length,0);
+});
+
+test('catálogo abre matrículas explicitamente e rejeita publicação por aluno',async()=>{
+ const cid=(await db.query<{id:string}>("select id from public.courses where slug='full-stack-90'")).rows[0].id;
+ await assert.rejects(asUser(a,'select public.set_course_publication($1,false)',[cid]));
+ await asUser(admin,'select public.set_course_publication($1,false)',[cid]);
+ await assert.rejects(asUser(a,'select public.enroll_course($1)',[cid]));
+ assert.equal((await asUser(a,'select public.can_study_module($1) as access',[m1])).rows[0].access,true);
+ await asUser(admin,'select public.set_course_publication($1,true)',[cid]);
+ await asUser(a,'select public.enroll_course($1)',[cid]);
 });

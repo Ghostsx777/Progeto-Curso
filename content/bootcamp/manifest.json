@@ -1,0 +1,11 @@
+{
+  "course_slug": "full-stack-90",
+  "status": "partial_draft",
+  "planned_hours": 234,
+  "module": {"slug":"fundamentos","title":"Fundamentos da programação e web","sort_order":1,"description":"Da resolução de problemas à construção de páginas web. Este lote cobre apenas a introdução à lógica.","preview":"Objetivos: compreender entrada, processamento, saída, variáveis e decisões. O restante do módulo e o projeto web ainda estão em produção."},
+  "lessons": [
+    {"file":"01-programas.md","title":"01 · Programas, algoritmos e resultados","sort_order":1,"estimated_minutes":60,"example":"01-programas.mjs"},
+    {"file":"02-dados.md","title":"02 · Dados, variáveis e cálculos","sort_order":2,"estimated_minutes":60,"example":"02-dados.mjs"},
+    {"file":"03-decisoes.md","title":"03 · Condições, limites e testes","sort_order":3,"estimated_minutes":60,"example":"03-decisoes.mjs"}
+  ]
+}

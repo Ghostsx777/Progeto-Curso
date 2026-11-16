@@ -15,17 +15,22 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 - Página administrativa de histórico com as 100 ações mais recentes.
 - Migração 003: cursos, isolamento, progressão no banco, recuperação, auditoria e funções de certificados.
 - Testes PostgreSQL/RLS e regras pedagógicas; CI sem publicação.
+- Matrículas por curso; área de estudo do proprietário respeita os mesmos bloqueios, sem autoaprovação de entregas. Abertura/fechamento de matrículas no catálogo é explícita e auditada.
+- Professor de IA implementado com contexto da aula, histórico privado, cotas persistentes e integração Responses API. Desativado por padrão; ainda sem teste de chamada real.
+- Limite transacional de dez contas incluindo proprietário (migração 008).
+- Preparação de build para Netlify Free, diagnóstico de configuração sem segredos e relatório de hospedagem.
+- Primeiro lote didático: três aulas de lógica (3 horas previstas), exemplos executáveis testados, exercícios e questionários comentados; importação como rascunhos sem sobrescrever aulas existentes.
 
 ## Limites de verificação
 - Ainda não há Supabase configurado: login real, emails, bootstrap e fluxos completos não foram validados nesse serviço.
 - Testes locais usam PostgreSQL PGlite e esquema Auth mínimo.
 - Não houve revisão visual em navegador ou testes completos de acessibilidade/dispositivos.
-- Não houve deploy, domínio, backups ou operação em produção. A nova preferência de hospedagem é VPS na Europa, sem suspensão por inatividade; a preparação operacional está pendente.
+- Não houve deploy, domínio, backups ou operação em produção. A preferência atual é hospedagem gratuita para dez pessoas, com Netlify + Supabase, substituindo a preferência anterior por VPS. Os limites de planos gratuitos impedem promessa de disponibilidade contínua.
 
 ## Falta para cumprir o documento mestre
 - Configuração avançada de regras, versionamento de cursos em andamento e criação de outras formações pela interface.
-- Matrículas e experiência do administrador como aluno, com progressão equivalente e sem autoaprovação oficial; o acesso administrativo atual não equivale a essa experiência.
-- Currículo didático completo de 234 horas, exercícios, provas, projetos e recuperação.
+- Validação E2E das matrículas e da experiência do proprietário como aluno. Projetos com correção humana precisam de avaliação independente; a IA não concede aprovação oficial.
+- Restante do currículo didático de 234 horas, provas, projetos e recuperação; três aulas não equivalem ao curso completo.
 - Correção automática e execução isolada de código.
 - Relatórios e perfil detalhado, inatividade e notificações.
 - Certificado PDF e página pública: existem funções de banco, mas não recurso completo.
@@ -37,10 +42,12 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 Não considerar etapas dependentes de serviços concluídas só porque o build passa. Não admitir alunos reais ainda.
 
 ## Verificações locais desta versão
-- 21 testes de regras, validação e PostgreSQL/RLS; dados exclusivamente fictícios. Rollback e reutilização foram testados, mas concorrência multi-conexão e Supabase Auth real continuam pendentes.
+- A suíte anterior de 23 testes foi aprovada ao implementar matrículas. Nesta continuação foram executados apenas 8 testes novos/pendentes: tutor e capacidade (5), conteúdo (2), publicação do catálogo (1). Não houve repetição da suíte inteira.
 - Build de produção com verificação TypeScript.
 - Páginas públicas responderam HTTP 200; áreas privadas redirecionaram ao login no ambiente sem Supabase.
 - Repositório conectado a Ghostsx777/Progeto-Curso. A pasta de trabalho atual é devpath-github; devpath-academy contém a cópia anterior à ligação ao GitHub.
+- `check:setup` encontrou `.env.local` e variáveis necessários ausentes: Supabase remoto ainda não verificável. Concorrência com dez sessões reais, SMTP e API OpenAI permanecem sem validação externa.
 
 ## Nova referência de produto
 O anexo recebido está preservado em `docs/MASTER_SPECIFICATION_REFERENCE.txt`. A comparação com o código e a precedência da regra de convite de uso único estão em `docs/SPECIFICATION_AUDIT.md`. Nenhuma exceção de reutilização de convite será implementada.
+As decisões mais recentes de hospedagem, limites e verificação estão em `docs/FREE_HOSTING_AUDIT.md`, que prevalece sobre a preferência histórica por VPS.

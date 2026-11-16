@@ -1,6 +1,6 @@
 {
   "name": "devpath-academy", "version": "0.1.0", "private": true,
-  "scripts": {"dev":"next dev", "build":"next build", "start":"next start", "typecheck":"tsc --noEmit", "test":"tsx --test tests/*.test.ts", "bootstrap":"node --env-file=.env.local scripts/bootstrap-admin.mjs"},
+  "scripts": {"dev":"next dev", "build":"next build", "start":"next start", "typecheck":"tsc --noEmit", "test":"tsx --test tests/*.test.ts", "check:setup":"node scripts/check-setup.mjs", "test:pending":"tsx --test --test-name-pattern=\"tutor|professor|capacidade\" tests/database.test.ts tests/tutor.test.ts", "bootstrap":"node --env-file=.env.local scripts/bootstrap-admin.mjs"},
   "dependencies": {"next":"^16.0.0", "react":"^19.2.0", "react-dom":"^19.2.0", "@supabase/ssr":"^0.8.0", "@supabase/supabase-js":"^2.80.0", "zod":"^4.1.0", "lucide-react":"^0.468.0", "react-markdown":"^10.1.0", "remark-gfm":"^4.0.1", "pdf-lib":"^1.17.1", "server-only":"^0.0.1"},
   "devDependencies": {"typescript":"^5.9.0", "@types/node":"^24.0.0", "@types/react":"^19.2.0", "@types/react-dom":"^19.2.0", "tailwindcss":"^4.1.0", "@tailwindcss/postcss":"^4.1.0", "tsx":"^4.20.0", "@electric-sql/pglite":"^0.3.14"}
 }

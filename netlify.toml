@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# O adaptador Next.js é detectado pelo Netlify. Não exportar como site estático.
+# Segredos: configurar no painel do provedor, nunca neste arquivo.
+# Este arquivo não cria um site nem autoriza publicação.
