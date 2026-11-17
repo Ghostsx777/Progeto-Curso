@@ -19,7 +19,7 @@ Definir SUPABASE_DB_URL e SUPABASE_DB_CA_FILE no ambiente privado local. A URL c
 ## Bloqueios para acesso externo funcional
 
 1. Conta Netlify e vínculo com o repositório; nenhum link externo criado nesta etapa.
-2. Desativar Allow new users to sign up no Supabase Auth. O trigger bloqueia acesso sem convite, mas a configuração do serviço ainda está aberta.
+2. CONCLUÍDO: Allow new users to sign up desativado no Supabase Auth; confirmação remota pelo check:setup.
 3. Criar proprietário com email, nome e senha fornecidos no ambiente privado para `npm run bootstrap`.
 4. Configurar SMTP, origem HTTPS e redirects e validar login, convite e recuperação por email.
 5. Executar testes de hospedagem, navegador e concorrência ainda pendentes. Não repetir as suítes locais já aprovadas sem mudança relevante.

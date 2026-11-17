@@ -6,6 +6,9 @@
   NODE_VERSION = "24"
   NEXT_TELEMETRY_DISABLED = "1"
 
-# O adaptador Next.js é detectado pelo Netlify. Não exportar como site estático.
+# Ativar explicitamente o runtime: publicar .next sem ele causa 404 nas rotas.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
 # Segredos: configurar no painel do provedor, nunca neste arquivo.
 # Este arquivo não cria um site nem autoriza publicação.

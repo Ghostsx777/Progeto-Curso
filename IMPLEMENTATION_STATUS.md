@@ -46,7 +46,7 @@ Não considerar etapas dependentes de serviços concluídas só porque o build p
 - Build de produção com verificação TypeScript.
 - Páginas públicas responderam HTTP 200; áreas privadas redirecionaram ao login no ambiente sem Supabase.
 - Repositório conectado a Ghostsx777/Progeto-Curso. A pasta de trabalho atual é devpath-github; devpath-academy contém a cópia anterior à ligação ao GitHub.
-- `check:setup` confirmou Auth acessível e tabelas remotas disponíveis. Cadastro público ainda habilitado na configuração Auth e precisa ser desativado (o trigger já rejeita conta sem convite). Concorrência com dez sessões reais, SMTP e API OpenAI permanecem sem validação externa.
+- `check:setup` confirmou Auth acessível e tabelas remotas disponíveis. Cadastro público desativado na configuração Auth, confirmado por check:setup. Concorrência com dez sessões reais, SMTP e API OpenAI permanecem sem validação externa.
 
 ## Nova referência de produto
 O anexo recebido está preservado em `docs/MASTER_SPECIFICATION_REFERENCE.txt`. A comparação com o código e a precedência da regra de convite de uso único estão em `docs/SPECIFICATION_AUDIT.md`. Nenhuma exceção de reutilização de convite será implementada.
