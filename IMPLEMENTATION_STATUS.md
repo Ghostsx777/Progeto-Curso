@@ -22,7 +22,7 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 - Primeiro lote didático: três aulas de lógica (3 horas previstas), exemplos executáveis testados, exercícios e questionários comentados; importação como rascunhos sem sobrescrever aulas existentes.
 
 ## Limites de verificação
-- Ainda não há Supabase configurado: login real, emails, bootstrap e fluxos completos não foram validados nesse serviço.
+- Supabase conectado e nove migrações aplicadas em 17/11/2026. Triggers e RLS verificados no PostgreSQL remoto com fixtures revertidas; login via navegador, emails, bootstrap e fluxos completos ainda não validados.
 - Testes locais usam PostgreSQL PGlite e esquema Auth mínimo.
 - Não houve revisão visual em navegador ou testes completos de acessibilidade/dispositivos.
 - Não houve deploy, domínio, backups ou operação em produção. A preferência atual é hospedagem gratuita para dez pessoas, com Netlify + Supabase, substituindo a preferência anterior por VPS. Os limites de planos gratuitos impedem promessa de disponibilidade contínua.
@@ -46,7 +46,7 @@ Não considerar etapas dependentes de serviços concluídas só porque o build p
 - Build de produção com verificação TypeScript.
 - Páginas públicas responderam HTTP 200; áreas privadas redirecionaram ao login no ambiente sem Supabase.
 - Repositório conectado a Ghostsx777/Progeto-Curso. A pasta de trabalho atual é devpath-github; devpath-academy contém a cópia anterior à ligação ao GitHub.
-- `check:setup` encontrou `.env.local` e variáveis necessários ausentes: Supabase remoto ainda não verificável. Concorrência com dez sessões reais, SMTP e API OpenAI permanecem sem validação externa.
+- `check:setup` confirmou Auth acessível e tabelas remotas disponíveis. Cadastro público ainda habilitado na configuração Auth e precisa ser desativado (o trigger já rejeita conta sem convite). Concorrência com dez sessões reais, SMTP e API OpenAI permanecem sem validação externa.
 
 ## Nova referência de produto
 O anexo recebido está preservado em `docs/MASTER_SPECIFICATION_REFERENCE.txt`. A comparação com o código e a precedência da regra de convite de uso único estão em `docs/SPECIFICATION_AUDIT.md`. Nenhuma exceção de reutilização de convite será implementada.
