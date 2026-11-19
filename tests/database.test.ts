@@ -142,7 +142,8 @@ test('falha após criação de perfil e consumo reverte conta, convite e auditor
  const created=await asUser<{id:string}>(admin,'select public.create_invite_at($1,$2,null) as id',[hash,'2099-11-20T15:37:00Z']);
  await assert.rejects(db.transaction(async tx=>{
    await tx.query("insert into auth.users(id,email,raw_app_meta_data) values($1,'rollback@example.invalid',$2)",[uid,JSON.stringify({invite_hash:hash})]);
-   // O trigger já consumiu o convite, mas o cadastro ainda não terminou a transação.
+   await tx.exec('set constraints auth.private_signup immediate');
+   // Força o trigger antes de simular uma falha posterior, ainda sem COMMIT.
    const inside=await tx.query<{used_by:string}>('select used_by from public.invites where id=$1',[created.rows[0].id]);
    assert.equal(inside.rows[0].used_by,uid);
    throw new Error('Simulação de falha do cadastro antes do COMMIT');
@@ -222,6 +223,7 @@ test('capacidade permite dez contas incluindo proprietário e rejeita a décima 
  const count=Number((await db.query<{n:string}>('select count(*) n from public.profiles')).rows[0].n);
  let lastHash='';
  await assert.rejects(db.transaction(async tx=>{
+   await tx.exec('set constraints auth.private_signup immediate');
    for(let i=count;i<=10;i++){
      const hash=(100+i).toString(16).padStart(64,'0');lastHash=hash;
      await tx.query("insert into public.invites(token_hash,created_by,expires_at) values($1,$2,now()+interval '1 day')",[hash,admin]);

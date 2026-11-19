@@ -25,6 +25,8 @@ async function denied(operation){
 try{
  await db.connect();await db.query('begin');begun=true;
  await db.query("set local lock_timeout='5s'");
+ // These fixtures supply complete metadata at INSERT. Auth's deferred path has its own test.
+ await db.query('set constraints auth.private_signup immediate');
  const owner=await db.query("select id from public.profiles where role='admin'");
  if(owner.rowCount)throw new Error('Run this bootstrap verification before creating the real owner.');
  const admin=randomUUID(),a=randomUUID(),b=randomUUID();

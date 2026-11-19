@@ -8,4 +8,13 @@ Endereço: https://heroic-puppy-838831.netlify.app
 - Este commit inicia nova publicação para incorporar as variáveis. Login autenticado ainda depende da inicialização do proprietário e da verificação seguinte.
 - Não houve ativação de plano pago ou IA.
 
-Pendências: URL e templates Auth, criação do proprietário, definição privada da senha, SMTP para convidados e testes E2E correspondentes. Curso completo e demais recursos continuam conforme IMPLEMENTATION_STATUS.md.
+## Continuação em 19/11/2026
+
+- Nova publicação concluída: / e /login retornam 200 sem aviso de configuração; /painel e /admin retornam 307 para /login; /nova-senha retorna 200.
+- Site URL do Supabase atualizado para a origem HTTPS acima. Allowlist contém somente /auth/confirm e /nova-senha dessa origem.
+- Proprietário criado via Auth API. Login real com credencial inicial aleatória e leitura da função admin confirmados; sessão de verificação encerrada. A credencial aleatória não foi armazenada. Link temporário para definição de senha salvo exclusivamente em arquivo local ignorado pelo Git.
+- Erro real identificado: app_metadata pode ser gravado pelo Auth após INSERT. Migração 011 valida a linha final no COMMIT, preservando atomicidade, bloqueios e rejeição de cadastro sem convite. Migração 010 concede somente execução dos triggers ao papel interno Auth; essa permissão isolada não corrigia o problema de metadados.
+- Novo teste do fluxo INSERT/UPDATE/COMMIT aprovado. Testes afetados de convite único/expiração, revogação, rollback e capacidade aprovados. Não houve repetição da suíte inteira.
+- O painel exige SMTP próprio para editar os templates de email. Nenhum provedor foi contratado ou configurado.
+
+Pendências: usuário definir senha e validar sessão no navegador; SMTP e templates para convidados/recuperação; testes E2E de email e concorrência. Curso completo e demais recursos continuam conforme IMPLEMENTATION_STATUS.md. Esta etapa não conclui o produto inteiro.

@@ -25,7 +25,7 @@ ZIP com página inicial, regras pedagógicas e duas migrações SQL. Sem runtime
 - Supabase conectado e nove migrações aplicadas em 17/11/2026. Triggers e RLS verificados no PostgreSQL remoto com fixtures revertidas; login via navegador, emails, bootstrap e fluxos completos ainda não validados.
 - Testes locais usam PostgreSQL PGlite e esquema Auth mínimo.
 - Não houve revisão visual em navegador ou testes completos de acessibilidade/dispositivos.
-- Não houve deploy, domínio, backups ou operação em produção. A preferência atual é hospedagem gratuita para dez pessoas, com Netlify + Supabase, substituindo a preferência anterior por VPS. Os limites de planos gratuitos impedem promessa de disponibilidade contínua.
+- Site publicado em https://heroic-puppy-838831.netlify.app com Supabase configurado. Proprietário criado e login Auth API verificado; definição de senha pelo usuário e E2E de navegador/email pendentes. Backups e operação para alunos ainda não validados. Os limites de planos gratuitos impedem promessa de disponibilidade contínua.
 
 ## Falta para cumprir o documento mestre
 - Configuração avançada de regras, versionamento de cursos em andamento e criação de outras formações pela interface.
