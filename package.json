@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
@@ -13,23 +13,29 @@
     "db:migrate": "node scripts/migrate-db.mjs --apply",
     "db:verify": "node scripts/verify-remote-db.mjs",
     "test:pending": "tsx --test --test-name-pattern=\"tutor|professor|capacidade\" tests/database.test.ts tests/tutor.test.ts",
-    "bootstrap": "node --env-file=.env.local scripts/bootstrap-admin.mjs"
+    "bootstrap": "node --env-file=.env.local scripts/bootstrap-admin.mjs",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.80.0",
+    "highlight.js": "^11.12.0",
     "lucide-react": "^0.468.0",
+    "mermaid": "^12.3.0",
     "next": "^16.0.0",
     "pdf-lib": "^1.17.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
     "server-only": "^0.0.1",
+    "unified": "^11.0.5",
     "zod": "^4.1.0"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.3.14",
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4.1.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.0",

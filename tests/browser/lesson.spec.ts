@@ -1,0 +1,23 @@
+import {test,expect} from '@playwright/test';
+test('reader/editor and isolated labs',async({page,context})=>{
+ await context.grantPermissions(['clipboard-read','clipboard-write']);
+ await page.route('**/media/qa.png',r=>r.fulfill({contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD1sAAAAASUVORK5CYII=','base64')}));
+ await page.goto('http://127.0.0.1:3001/dev/lesson-preview');
+ await expect(page.locator('iframe[src*="youtube"]')).toHaveCount(0);
+ await page.getByRole('button',{name:/Ampliar:/}).click();await expect(page.getByRole('dialog')).toBeVisible();await page.keyboard.press('Escape');
+ await page.getByRole('button',{name:'Copiar código'}).click();await expect(page.getByText('Código copiado.')).toBeVisible();expect(await page.evaluate(()=>navigator.clipboard.readText())).toContain('const total');
+ await expect(page.frameLocator('iframe[title="Diagrama Mermaid"]').locator('svg')).toBeVisible({timeout:60000});
+ const lab=(mode:string)=>page.locator('.playground').filter({has:page.getByRole('heading',{name:'Laboratório '+mode,exact:true})});
+ const js=lab('javascript');for(let i=0;i<2;i++){await js.getByRole('button',{name:'Executar exemplo'}).click();await expect(js.getByRole('status')).toHaveText('Resultado esperado atingido (autoestudo, sem nota).');}
+ await js.locator('textarea').fill('while(true) {}');await js.getByRole('button',{name:'Executar exemplo'}).click();await expect(page.frameLocator('iframe[title="Resultado: Laboratório javascript"]').locator('#out')).toContainText('limite de 1 segundo');
+ await js.locator('textarea').fill('console.log(typeof document);');await js.getByRole('button',{name:'Executar exemplo'}).click();await expect(page.frameLocator('iframe[title="Resultado: Laboratório javascript"]').locator('#out')).toHaveText('undefined');
+ const html=lab('html');await html.locator('textarea').first().fill('<h1>Seguro</h1><script>parent.hacked=true</script><meta http-equiv="refresh" content="0;url=https://example.com"><a href="https://example.com">Ir</a><img src="https://example.com/x">');await html.getByRole('button',{name:'Executar exemplo'}).click();const hf=page.frameLocator('iframe[title="Resultado: Laboratório html"]');await expect(hf.getByRole('heading',{name:'Seguro'})).toBeVisible();await expect(hf.locator('script,a,img,meta[http-equiv="refresh"]')).toHaveCount(0);
+ await lab('sql').getByRole('button',{name:'Executar exemplo'}).click();await expect(lab('sql').getByRole('status')).toContainText('Carla');for(let i=0;i<3;i++)await page.getByRole('button',{name:'Próximo passo'}).click();await expect(page.locator('output')).toHaveText('1 → 2 → 3');
+ await page.route('https://www.youtube-nocookie.com/**',r=>r.fulfill({contentType:'text/html',body:'<p>Player fixture</p>'}));await page.getByRole('button',{name:'Carregar vídeo'}).click();await expect(page.locator('iframe[src*="youtube"]')).toHaveAttribute('src',/autoplay=0/);
+});
+test('editor/mobile',async({page})=>{
+ await page.goto('http://127.0.0.1:3001/dev/lesson-preview');
+ const editor=page.getByRole('region',{name:'Editor de teste'});await editor.getByText('Inserir e organizar recursos didáticos',{exact:true}).click();await expect(editor.locator('details.media-builder')).toHaveAttribute('open','');await editor.getByRole('combobox',{name:/^Recurso/}).selectOption('video');await editor.getByLabel('URL',{exact:true}).fill('https://youtu.be/UB1O30fR-EE');await editor.getByLabel('Título',{exact:true}).fill('Vídeo inserido');await editor.getByLabel('Descrição',{exact:true}).fill('Explicação');await editor.getByRole('button',{name:'Inserir recurso'}).click();await expect(editor.getByLabel('Conteúdo',{exact:true})).toHaveValue(/Vídeo inserido/);
+ await editor.getByRole('combobox',{name:/^Recurso/}).selectOption('code');await editor.getByRole('button',{name:'Inserir recurso'}).click();await editor.getByRole('button',{name:'Subir bloco 2',exact:true}).click();expect(await editor.getByLabel('Conteúdo',{exact:true}).inputValue()).toMatch(/Exemplo explicado[\s\S]*Vídeo inserido/);await editor.getByRole('button',{name:'Editar bloco 1',exact:true}).click();await editor.getByLabel('Título',{exact:true}).fill('Código atualizado');await editor.getByRole('button',{name:'Atualizar recurso'}).click();await editor.getByRole('button',{name:'Visualizar',exact:true}).click();await expect(editor.getByText('Código atualizado',{exact:true})).toBeVisible();
+ for(const width of [1280,390]){await page.setViewportSize({width,height:900});await page.screenshot({path:`test-results/lesson-${width}.png`,fullPage:true});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);}
+});

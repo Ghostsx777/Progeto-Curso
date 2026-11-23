@@ -51,3 +51,14 @@ Não considerar etapas dependentes de serviços concluídas só porque o build p
 ## Nova referência de produto
 O anexo recebido está preservado em `docs/MASTER_SPECIFICATION_REFERENCE.txt`. A comparação com o código e a precedência da regra de convite de uso único estão em `docs/SPECIFICATION_AUDIT.md`. Nenhuma exceção de reutilização de convite será implementada.
 As decisões mais recentes de hospedagem, limites e verificação estão em `docs/FREE_HOSTING_AUDIT.md`, que prevalece sobre a preferência histórica por VPS.
+
+
+## 20/11/2026 — evolução local das aulas
+
+Markdown preservado; adicionados blocos de imagens, YouTube por clique, Mermaid,
+código explicado, laboratórios isolados, referências e editor assistido com prévia/reordenação.
+Sem migração remota, publicação de aula, push ou deploy. Detalhes, limites e validação
+em docs/LESSON_MEDIA.md. Suíte existente aprovada; cinco testes novos de validação/publicação
+aprovados; cenários de leitura/laboratórios e editor/mobile aprovados no Edge; build e
+TypeScript aprovados com Webpack. A reprodução audiovisual externa e a gravação remota
+não são declaradas verificadas. Não confundir esta evolução do leitor com conclusão do curso.

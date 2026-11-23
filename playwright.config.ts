@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./tests/browser',timeout:120000,workers:1,use:{browserName:'chromium',channel:'msedge',headless:true,actionTimeout:15000},webServer:{command:'npm run dev -- --hostname 127.0.0.1 --port 3001',url:'http://127.0.0.1:3001/dev/lesson-preview',env:{LESSON_PREVIEW:'true'},reuseExistingServer:!process.env.CI},reporter:'list'});
