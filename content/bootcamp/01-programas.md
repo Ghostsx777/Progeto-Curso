@@ -306,14 +306,6 @@ Depois de confirmar o resultado, altere os argumentos para `totalCompra(7, 6)`. 
 
 ## 9. Vídeo complementar
 
-````devpath
-{
-  "type": "video",
-  "url": "https://www.youtube.com/watch?v=6OxA9er9VFo",
-  "title": "Introdução à lógica de programação",
-  "description": "Vídeo complementar para rever a ideia de resolver um problema por etapas antes de escrever código. Assista como reforço; em seguida, retome o exemplo e explique com suas palavras a entrada, o processamento e a saída."
-}
-````
 
 O vídeo abaixo é material externo, não produzido pela DevPath Academy. Foi escolhido como complemento em português por apresentar conceitos de lógica, algoritmos, pseudocódigo e exercícios. Não substitui as explicações e atividades desta aula. O curso completo é longo e aborda assuntos que pertencem a aulas futuras; assista apenas aos capítulos indicados.
 
@@ -324,7 +316,7 @@ O vídeo abaixo é material externo, não produzido pela DevPath Academy. Foi es
   "title": "Curso de Lógica de Programação e Algoritmos — Victor Lima",
   "description": "Material complementar externo. Para esta aula, concentre-se em 00:00–34:47: apresentação, programas, linguagens, lógica, algoritmos, pseudocódigo e primeiros exercícios. Os capítulos posteriores avançam para variáveis, condições e repetições, que serão estudadas noutras aulas. Ative as legendas se precisar e anote dúvidas; a disponibilidade e as legendas dependem do YouTube."
 }
-```
+````
 
 **Atividade durante o vídeo:** anote uma definição de algoritmo, um exemplo de instrução ambígua e uma diferença entre algoritmo e programa. Depois escreva essas ideias com suas próprias palavras, sem copiar a descrição do vídeo.
 
