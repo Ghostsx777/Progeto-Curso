@@ -284,9 +284,7 @@ A mensagem pode apontar para o local onde o parser percebeu o problema, não nec
 
 Se o resultado for diferente do que você esperava, há pelo menos três possibilidades: o código está errado, a previsão manual está errada ou o requisito foi interpretado incorretamente. Volte ao enunciado, refaça a conta e só então decida o que corrigir.
 
-<aside>
-**Boa prática profissional:** registe entrada utilizada, resultado esperado, resultado observado e hipótese sobre a causa. Esse pequeno relatório torna a depuração mais objetiva e facilita pedir ajuda sem depender de “não funciona”.
-</aside>
+> **Boa prática profissional:** registe a entrada utilizada, o resultado esperado, o resultado observado e a hipótese sobre a causa. Esse pequeno relatório torna a depuração mais objetiva e facilita pedir ajuda sem depender de “não funciona”.
 
 ## 8. Demonstração interativa
 
