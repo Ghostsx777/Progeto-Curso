@@ -432,7 +432,7 @@ Programar começa por compreender um problema e transformar seus requisitos em p
 
 - [MDN — Introdução a JavaScript](https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Guide/Introduction)
 - [MDN — Funções](https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Guide/Functions)
-- [MDN — Console do navegador](https://developer.mozilla.org/pt-PT/docs/Web/API/console)
+- [MDN — Console do navegador](https://developer.mozilla.org/pt-BR/docs/Web/API/console)
 - [Vídeo complementar — Victor Lima](https://www.youtube.com/watch?v=6OxA9er9VFo)
 
 **Próxima aula:** Dados, variáveis e cálculos. Você aprenderá a representar números, textos e valores lógicos, escolher entre `const` e `let`, realizar operações e compreender por que dados de texto não são automaticamente números.
