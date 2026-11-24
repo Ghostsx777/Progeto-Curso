@@ -62,3 +62,6 @@ em docs/LESSON_MEDIA.md. Suíte existente aprovada; cinco testes novos de valida
 aprovados; cenários de leitura/laboratórios e editor/mobile aprovados no Edge; build e
 TypeScript aprovados com Webpack. A reprodução audiovisual externa e a gravação remota
 não são declaradas verificadas. Não confundir esta evolução do leitor com conclusão do curso.
+
+## Etapa técnica do novo domínio
+Base auditada: main 5b392ac. A instalação limpa, os 38 testes e o typecheck passaram no Windows. Os testes de conteúdo agora comparam quebras de linha normalizadas; o Markdown aprovado permanece intacto. O import do leitor segue o padrão sem extensão. A aplicação usa 32 bytes aleatórios e SHA-256 para convites. O trigger 011 obtém lock da linha, revalida estado e prazo e registra consumo na transação da conta. O Supabase Auth confirmou cadastro público desativado e confirmação de email obrigatória. A confirmação de entrega e recuperação por email depende de caixa de teste e do painel Auth. As rotas e a configuração proposta estão em docs/NETLIFY_STATUS.md.

@@ -1,6 +1,6 @@
 # Publicação — 18/11/2026
 
-Endereço: https://heroic-puppy-838831.netlify.app
+Endereço oficial: https://devpachtacademy.netlify.app
 
 - Adaptador Next.js explícito corrigiu os erros 404. Página inicial e login responderam 200; áreas privadas redirecionaram ao login.
 - Configurados no painel: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_PUBLIC_APP_URL e AI_TUTOR_ENABLED=false.
@@ -18,3 +18,10 @@ Endereço: https://heroic-puppy-838831.netlify.app
 - O painel exige SMTP próprio para editar os templates de email. Nenhum provedor foi contratado ou configurado.
 
 Pendências: usuário definir senha e validar sessão no navegador; SMTP e templates para convidados/recuperação; testes E2E de email e concorrência. Curso completo e demais recursos continuam conforme IMPLEMENTATION_STATUS.md. Esta etapa não conclui o produto inteiro.
+
+## Mudança de domínio
+A configuração versionada de produção define NEXT_PUBLIC_APP_URL=https://devpachtacademy.netlify.app. Convites, confirmação de cadastro e recuperação usam essa variável no build. A navegação interna usa caminhos relativos. O callback de Auth redireciona dentro da origem da requisição.
+
+No Supabase, configurar Site URL como https://devpachtacademy.netlify.app e permitir os destinos exatos https://devpachtacademy.netlify.app/auth/confirm e https://devpachtacademy.netlify.app/nova-senha. A configuração remota e a entrega de emails reais precisam de verificação autenticada. Para convites já distribuídos e ainda válidos, preservar /convite/ e o token ao trocar o domínio.
+
+Verificação HTTP: início, login e recuperação retornaram 200. Painel e administração redirecionaram ao login; callback sem token redirecionou ao login no novo domínio.

@@ -6,6 +6,9 @@
   NODE_VERSION = "24"
   NEXT_TELEMETRY_DISABLED = "1"
 
+[context.production.environment]
+  NEXT_PUBLIC_APP_URL = "https://devpachtacademy.netlify.app"
+
 # Ativar explicitamente o runtime: publicar .next sem ele causa 404 nas rotas.
 [[plugins]]
   package = "@netlify/plugin-nextjs"
