@@ -38,10 +38,11 @@ Ao concluir a aula, você deverá conseguir:
 - Justificar casos de teste e reconhecer limitações da solução.
 
 
-## 1. Situação real: calcular uma compra sem improvisar
 ## Pré-requisitos
 
 Nenhum conhecimento de programação é necessário. A aula começa do zero. Você precisará de um navegador atualizado e de um computador para executar JavaScript no Console. Se estiver num telemóvel, poderá estudar a teoria e resolver pseudocódigo, mas a execução prática é mais confortável num computador. Não instale ferramentas nesta etapa.
+
+## 1. Situação real: calcular uma compra sem improvisar
 
 
 Imagine uma pequena papelaria que precisa calcular o valor de uma encomenda. Uma pessoa pede três cadernos. Cada caderno custa 12 euros. O atendente precisa informar o total antes de concluir a compra.
@@ -318,7 +319,7 @@ O vídeo abaixo é material externo, não produzido pela DevPath Academy. Foi es
 
 **Atividade durante o vídeo:** anote uma definição de algoritmo, um exemplo de instrução ambígua e uma diferença entre algoritmo e programa. Depois escreva essas ideias com suas próprias palavras, sem copiar a descrição do vídeo.
 
-## Exercícios independentes — progressão por níveis
+## 10. Exercícios independentes — progressão por níveis
 
 Resolva na ordem. Nos primeiros, explique o raciocínio em texto. Nos últimos, escreva pseudocódigo ou JavaScript. Não consulte uma solução pronta antes de tentar.
 
@@ -349,7 +350,7 @@ Resolva na ordem. Nos primeiros, explique o raciocínio em texto. Nos últimos, 
 14. Crie três casos de teste para a função de compra, incluindo uma quantidade zero. Escreva resultados esperados antes de executar.
 
 ## 11. Desafio prático — orçamento de material escolar
-## Desafio prático
+### Requisitos e entrega
 
 
 Uma papelaria quer calcular uma encomenda com dois produtos diferentes. O programa deve receber o preço unitário e a quantidade de cada produto, calcular os dois subtotais e somá-los para apresentar o total.
@@ -380,7 +381,6 @@ Uma papelaria quer calcular uma encomenda com dois produtos diferentes. O progra
 Uma solução que apresenta o número correto por coincidência, mas não explica as etapas, não demonstra domínio do algoritmo.
 
 ## 12. Boas práticas para levar às próximas aulas
-## Erros comuns e boas práticas
 
 
 - Entenda o requisito antes de escolher operadores ou escrever funções.
@@ -393,7 +393,7 @@ Uma solução que apresenta o número correto por coincidência, mas não explic
 - Não confunda “o programa executou” com “o programa resolveu o problema”.
 - Registe hipóteses e limitações; não esconda decisões importantes dentro do código.
 
-## Verificação de aprendizagem — revisão e avaliação final
+## 13. Verificação de aprendizagem — revisão e avaliação final
 
 Sem consultar o texto, responda:
 
@@ -426,7 +426,7 @@ Programar começa por compreender um problema e transformar seus requisitos em p
 - **Software:** programas e dados usados pelo sistema computacional.
 - **Teste de mesa:** acompanhamento manual dos passos e valores de um algoritmo.
 
-## Referências e revisão — continuidade
+## 15. Referências e revisão — continuidade
 
 - [MDN — Introdução a JavaScript](https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Guide/Introduction)
 - [MDN — Funções](https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Guide/Functions)
