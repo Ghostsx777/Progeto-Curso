@@ -41,7 +41,7 @@ A programação começa antes de escrever código. Começa por compreender o pro
 
 **Objetivo observável:** ao final desta aula, você deverá conseguir explicar o problema em linguagem simples, separar entrada, processamento e saída, escrever passos finitos, implementar uma função simples e testar o resultado com casos diferentes.
 
-## 2. O que é programar?
+## Explicação — o que é programar?
 
 Programar é especificar instruções que um sistema computacional pode executar para realizar uma tarefa. Essas instruções precisam ser representadas numa linguagem com regras próprias. O computador não completa intenções que ficaram apenas na cabeça de quem programou.
 
@@ -138,7 +138,7 @@ Não podemos calcular o total antes de conhecer os valores necessários. Uma seq
 
 Um algoritmo deve ter começo e fim definidos, passos claros e uma condição de término. Um procedimento que repete instruções sem nunca chegar a uma condição de parada pode não terminar. Estruturas de repetição serão estudadas mais adiante; por enquanto, observe que “finito” significa que a execução deve conseguir chegar ao fim para as entradas previstas.
 
-## 5. Da solução ao JavaScript
+## Exemplo executável — da solução ao JavaScript
 
 Agora vamos implementar o cálculo. Abra uma aba normal do navegador, abra as ferramentas de desenvolvimento (normalmente F12 ou pelo menu do navegador) e selecione **Console**. A interface pode variar conforme o navegador e o sistema operacional.
 
@@ -166,7 +166,7 @@ Resultado esperado:
 
 Experimente também `totalCompra(5, 4)`. O resultado esperado é `20`. Antes de pressionar Enter, faça a previsão e explique por que espera esse valor.
 
-### 5.1 Lendo cada parte do código
+## Explicação do código — lendo cada parte
 
 - `function` inicia a definição de uma função.
 - `totalCompra` é o nome escolhido. Um nome claro comunica a finalidade.
@@ -185,7 +185,7 @@ Este exemplo é intencionalmente pequeno. Ele não verifica se os valores são n
 
 Isso não torna o exemplo inútil. Ele ensina uma operação isolada. Em software real, os requisitos determinam as validações necessárias. Não acrescente regras por suposição; primeiro identifique o que o problema exige. A validação de condições será desenvolvida na Aula 003.
 
-## 6. Acompanhar a execução: teste de mesa
+## Exercício guiado — acompanhar a execução com teste de mesa
 
 Teste de mesa é acompanhar manualmente os valores e as operações de um algoritmo para prever o resultado. É uma maneira simples de descobrir falhas de raciocínio antes ou durante a execução.
 
@@ -300,7 +300,7 @@ O vídeo abaixo é material externo, não produzido pela DevPath Academy. Foi es
 
 **Atividade durante o vídeo:** anote uma definição de algoritmo, um exemplo de instrução ambígua e uma diferença entre algoritmo e programa. Depois escreva essas ideias com suas próprias palavras, sem copiar a descrição do vídeo.
 
-## 10. Exercícios progressivos
+## Exercícios independentes — progressão por níveis
 
 Resolva na ordem. Nos primeiros, explique o raciocínio em texto. Nos últimos, escreva pseudocódigo ou JavaScript. Não consulte uma solução pronta antes de tentar.
 
@@ -371,7 +371,7 @@ Uma solução que apresenta o número correto por coincidência, mas não explic
 - Não confunda “o programa executou” com “o programa resolveu o problema”.
 - Registe hipóteses e limitações; não esconda decisões importantes dentro do código.
 
-## 13. Revisão e avaliação final
+## Verificação de aprendizagem — revisão e avaliação final
 
 Sem consultar o texto, responda:
 
@@ -384,6 +384,10 @@ Sem consultar o texto, responda:
 7. Que evidências você apresentaria para demonstrar que sua solução atende ao requisito?
 
 **Autoavaliação:** considere esta aula concluída quando conseguir explicar os conceitos com suas palavras, decompor um problema novo, escrever passos finitos, implementar a função sem copiar e justificar pelo menos três testes. Se ainda não consegue, retome a seção correspondente e refaça os exercícios.
+
+## Resumo
+
+Programar começa por compreender um problema e transformar seus requisitos em passos precisos. Um algoritmo descreve uma sequência finita de ações; um programa implementa essas ações numa linguagem executável. Separar entrada, processamento e saída ajuda a organizar a solução. O pseudocódigo permite planejar sem depender da sintaxe de uma linguagem. Em JavaScript, uma função recebe argumentos por meio de parâmetros e pode devolver um resultado com `return`. O teste de mesa permite prever e acompanhar valores. Um programa pode executar sem erro e ainda conter um erro de lógica; por isso, é necessário comparar resultados observados com resultados esperados em diferentes casos.
 
 ## 14. Glossário essencial
 
@@ -400,7 +404,7 @@ Sem consultar o texto, responda:
 - **Software:** programas e dados usados pelo sistema computacional.
 - **Teste de mesa:** acompanhamento manual dos passos e valores de um algoritmo.
 
-## 15. Referências e continuidade
+## Referências e revisão — continuidade
 
 - [MDN — Introdução a JavaScript](https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Guide/Introduction)
 - [MDN — Funções](https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Guide/Functions)
