@@ -306,6 +306,15 @@ Depois de confirmar o resultado, altere os argumentos para `totalCompra(7, 6)`. 
 
 ## 9. Vídeo complementar
 
+````devpath
+{
+  "type": "video",
+  "url": "https://www.youtube.com/watch?v=6OxA9er9VFo",
+  "title": "Introdução à lógica de programação",
+  "description": "Vídeo complementar para rever a ideia de resolver um problema por etapas antes de escrever código. Assista como reforço; em seguida, retome o exemplo e explique com suas palavras a entrada, o processamento e a saída."
+}
+````
+
 O vídeo abaixo é material externo, não produzido pela DevPath Academy. Foi escolhido como complemento em português por apresentar conceitos de lógica, algoritmos, pseudocódigo e exercícios. Não substitui as explicações e atividades desta aula. O curso completo é longo e aborda assuntos que pertencem a aulas futuras; assista apenas aos capítulos indicados.
 
 ````devpath
@@ -319,7 +328,7 @@ O vídeo abaixo é material externo, não produzido pela DevPath Academy. Foi es
 
 **Atividade durante o vídeo:** anote uma definição de algoritmo, um exemplo de instrução ambígua e uma diferença entre algoritmo e programa. Depois escreva essas ideias com suas próprias palavras, sem copiar a descrição do vídeo.
 
-## 10. Exercícios independentes — progressão por níveis
+## Exercícios independentes — Exercícios progressivos por níveis
 
 Resolva na ordem. Nos primeiros, explique o raciocínio em texto. Nos últimos, escreva pseudocódigo ou JavaScript. Não consulte uma solução pronta antes de tentar.
 
@@ -349,7 +358,7 @@ Resolva na ordem. Nos primeiros, explique o raciocínio em texto. Nos últimos, 
 13. O programa devolve 36 para a entrada 12 e 3. Isso prova que funciona para todas as compras? Explique por que um único caso não é suficiente.
 14. Crie três casos de teste para a função de compra, incluindo uma quantidade zero. Escreva resultados esperados antes de executar.
 
-## 11. Desafio prático — orçamento de material escolar
+## Desafio prático — orçamento de material escolar
 ### Requisitos e entrega
 
 
@@ -380,7 +389,7 @@ Uma papelaria quer calcular uma encomenda com dois produtos diferentes. O progra
 
 Uma solução que apresenta o número correto por coincidência, mas não explica as etapas, não demonstra domínio do algoritmo.
 
-## 12. Boas práticas para levar às próximas aulas
+## Erros comuns e boas práticas
 
 
 - Entenda o requisito antes de escolher operadores ou escrever funções.
@@ -393,7 +402,7 @@ Uma solução que apresenta o número correto por coincidência, mas não explic
 - Não confunda “o programa executou” com “o programa resolveu o problema”.
 - Registe hipóteses e limitações; não esconda decisões importantes dentro do código.
 
-## 13. Verificação de aprendizagem — revisão e avaliação final
+## Verificação de aprendizagem — revisão e avaliação final
 
 Sem consultar o texto, responda:
 
@@ -426,7 +435,7 @@ Programar começa por compreender um problema e transformar seus requisitos em p
 - **Software:** programas e dados usados pelo sistema computacional.
 - **Teste de mesa:** acompanhamento manual dos passos e valores de um algoritmo.
 
-## 15. Referências e revisão — continuidade
+## Referências e revisão — continuidade
 
 - [MDN — Introdução a JavaScript](https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Guide/Introduction)
 - [MDN — Funções](https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Guide/Functions)
