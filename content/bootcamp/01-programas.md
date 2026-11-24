@@ -24,7 +24,25 @@ Esta é uma aula de formação, não uma leitura rápida. Faça as previsões an
 
 Os tempos são uma referência flexível. Se precisar de mais tempo para compreender ou depurar, use-o. Aprender não é competir contra o cronômetro.
 
+## Objetivos
+
+Ao concluir a aula, você deverá conseguir:
+
+- Explicar a diferença entre problema, algoritmo, programa e linguagem de programação.
+- Identificar entrada, processamento e saída num problema simples.
+- Escrever um algoritmo finito com passos claros e ordenados.
+- Traduzir o algoritmo para pseudocódigo e JavaScript.
+- Explicar parâmetros, argumentos e retorno de uma função.
+- Prever resultados com teste de mesa e confirmar por execução.
+- Diferenciar erro de sintaxe e erro de lógica.
+- Justificar casos de teste e reconhecer limitações da solução.
+
+
 ## 1. Situação real: calcular uma compra sem improvisar
+## Pré-requisitos
+
+Nenhum conhecimento de programação é necessário. A aula começa do zero. Você precisará de um navegador atualizado e de um computador para executar JavaScript no Console. Se estiver num telemóvel, poderá estudar a teoria e resolver pseudocódigo, mas a execução prática é mais confortável num computador. Não instale ferramentas nesta etapa.
+
 
 Imagine uma pequena papelaria que precisa calcular o valor de uma encomenda. Uma pessoa pede três cadernos. Cada caderno custa 12 euros. O atendente precisa informar o total antes de concluir a compra.
 
@@ -73,6 +91,8 @@ Uma **linguagem de programação** define sintaxe e significado para expressar i
 Não confunda algoritmo com código. O código é uma forma de representar e executar a solução; o raciocínio que define a solução deve existir antes e continuar sendo avaliado depois.
 
 ## 3. Decompor o problema: entrada, processamento e saída
+## Conceitos e diagrama
+
 
 Uma técnica inicial muito útil é separar o problema em três partes:
 
@@ -331,6 +351,8 @@ Resolva na ordem. Nos primeiros, explique o raciocínio em texto. Nos últimos, 
 14. Crie três casos de teste para a função de compra, incluindo uma quantidade zero. Escreva resultados esperados antes de executar.
 
 ## 11. Desafio prático — orçamento de material escolar
+## Desafio prático
+
 
 Uma papelaria quer calcular uma encomenda com dois produtos diferentes. O programa deve receber o preço unitário e a quantidade de cada produto, calcular os dois subtotais e somá-los para apresentar o total.
 
@@ -360,6 +382,8 @@ Uma papelaria quer calcular uma encomenda com dois produtos diferentes. O progra
 Uma solução que apresenta o número correto por coincidência, mas não explica as etapas, não demonstra domínio do algoritmo.
 
 ## 12. Boas práticas para levar às próximas aulas
+## Erros comuns e boas práticas
+
 
 - Entenda o requisito antes de escolher operadores ou escrever funções.
 - Use nomes que expressem o significado dos dados.
