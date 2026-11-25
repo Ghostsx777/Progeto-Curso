@@ -1,4 +1,6 @@
 'use server';
+import {cookies} from 'next/headers';
+import {recoveryResult} from '@/lib/recovery-result';
 import {z} from 'zod';
 import {createHash} from 'node:crypto';
 import {redirect} from 'next/navigation';
@@ -40,9 +42,12 @@ export async function register(_:FormState,form:FormData):Promise<FormState>{
 export async function recover(_:FormState,form:FormData):Promise<FormState>{
  if(!configured())return {error:'O proprietário ainda precisa configurar o Supabase.'};
  const parsed=email.safeParse(form.get('email'));if(!parsed.success)return {error:'Informe um email válido.'};
- const db=await database();const {error}=await db.auth.resetPasswordForEmail(parsed.data,{redirectTo:process.env.NEXT_PUBLIC_APP_URL+'/nova-senha'});
- if(error && (error.status===429 || (error.status??0)>=500))return {error:'Serviço de email temporariamente indisponível. Tente novamente mais tarde.'};
- return {success:'Se a conta existir, receberá as instruções de recuperação por email.'};
+ const jar=await cookies();
+ if(jar.has('recovery-wait'))return {error:'Você fez um pedido recente neste navegador. Confira o email ou aguarde um minuto para tentar novamente.'};
+ const db=await database();
+ const {error}=await db.auth.resetPasswordForEmail(parsed.data,{redirectTo:process.env.NEXT_PUBLIC_APP_URL+'/nova-senha'});
+ if(!error || error.status===429)jar.set('recovery-wait','1',{maxAge:60,httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',path:'/recuperar-senha'});
+ return recoveryResult(error);
 }
 export async function changePassword(_:FormState,form:FormData):Promise<FormState>{
  const parsed=password.safeParse(form.get('password'));if(!parsed.success)return {error:'Utilize entre 12 e 128 caracteres.'};
@@ -50,4 +55,3 @@ export async function changePassword(_:FormState,form:FormData):Promise<FormStat
  const {error}=await db.auth.updateUser({password:parsed.data});if(error)return {error:'Não foi possível alterar a senha.'};
  await db.auth.signOut();redirect('/login?message=password');
 }
-
