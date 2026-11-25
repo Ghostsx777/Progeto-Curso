@@ -40,7 +40,8 @@ export async function register(_:FormState,form:FormData):Promise<FormState>{
 export async function recover(_:FormState,form:FormData):Promise<FormState>{
  if(!configured())return {error:'O proprietário ainda precisa configurar o Supabase.'};
  const parsed=email.safeParse(form.get('email'));if(!parsed.success)return {error:'Informe um email válido.'};
- const db=await database();await db.auth.resetPasswordForEmail(parsed.data,{redirectTo:process.env.NEXT_PUBLIC_APP_URL+'/nova-senha'});
+ const db=await database();const {error}=await db.auth.resetPasswordForEmail(parsed.data,{redirectTo:process.env.NEXT_PUBLIC_APP_URL+'/nova-senha'});
+ if(error && (error.status===429 || (error.status??0)>=500))return {error:'Serviço de email temporariamente indisponível. Tente novamente mais tarde.'};
  return {success:'Se a conta existir, receberá as instruções de recuperação por email.'};
 }
 export async function changePassword(_:FormState,form:FormData):Promise<FormState>{
@@ -49,3 +50,4 @@ export async function changePassword(_:FormState,form:FormData):Promise<FormStat
  const {error}=await db.auth.updateUser({password:parsed.data});if(error)return {error:'Não foi possível alterar a senha.'};
  await db.auth.signOut();redirect('/login?message=password');
 }
+

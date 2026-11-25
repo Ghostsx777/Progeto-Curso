@@ -45,7 +45,7 @@ export default function Home() {
               Uma formação prática em desenvolvimento web, do primeiro HTML à construção e publicação de aplicações Full Stack.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <a href="/login" className="rounded-xl bg-cyan-300 px-6 py-3.5 text-sm font-bold text-slate-950 transition hover:bg-cyan-200">Acessar minha conta <span aria-hidden="true">→</span></a>
+              <a href="/login" className="btn">Acessar minha conta</a>
               <span className="rounded-xl border border-white/10 px-6 py-3.5 text-sm font-semibold text-slate-300">Acesso exclusivo por convite</span>
             </div>
             <div className="mt-12 flex flex-wrap gap-2">

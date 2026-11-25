@@ -14,7 +14,7 @@ export default async function Contents(){
      <ActionForm action={publishCourse} label={c.published?'Fechar novas matrículas':'Abrir matrículas'}>
        <input type="hidden" name="course_id" value={c.id}/><input type="hidden" name="published" value={String(!c.published)}/>
      </ActionForm>
-     <div className="grid-cards">{modules.data.filter(m=>m.course_id===c.id).map(m=><Link className="card stack" href={`/admin/conteudos/${m.id}`} key={m.id}><span className="eyebrow">Módulo {m.sort_order}</span><h3 className="title">{m.title}</h3><span className="badge">{m.published?'Publicado':'Rascunho'}</span><span className="text-cyan-300 text-sm">Editar aulas e atividades →</span></Link>)}</div>
+     <div className="grid-cards">{modules.data.filter(m=>m.course_id===c.id).map(m=><Link className="card stack" href={`/admin/conteudos/${m.id}`} key={m.id}><span className="eyebrow">Módulo {m.sort_order}</span><h3 className="title">{m.title}</h3><span className="badge">{m.published?'Publicado':'Rascunho'}</span><span className="text-cyan-300 text-sm">Editar aulas e atividades</span></Link>)}</div>
      <details className="card"><summary>Criar módulo</summary><ContentForm value={{kind:'module',id:'',course_id:c.id,title:'',slug:'',sort_order:Math.max(0,...modules.data.filter(m=>m.course_id===c.id).map(m=>m.sort_order))+1,pass_mark:70,description:'',preview:'',published:false}}/></details>
    </section>)}
    {!courses.data.length&&<p className="card muted">Execute as migrações para criar a formação inicial.</p>}
