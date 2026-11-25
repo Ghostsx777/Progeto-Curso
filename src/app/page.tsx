@@ -25,7 +25,7 @@ export default function Home() {
       <div className="relative mx-auto max-w-7xl px-6 py-7 lg:px-10">
         <header className="flex items-center justify-between border-b border-white/10 pb-6">
           <a href="/" className="flex items-center gap-3" aria-label="DevPath Academy início">
-            <span className="grid size-10 place-items-center rounded-xl border border-cyan-300/30 bg-cyan-300/10 text-lg font-black text-cyan-300">D</span>
+            <img src="/academy/mark.svg" alt="" width="46" height="46" />
             <span className="text-sm font-bold tracking-[0.16em]">DEVPATH <span className="text-cyan-300">ACADEMY</span></span>
           </a>
           <a href="/login" className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-cyan-300/60 hover:text-cyan-200">
@@ -63,7 +63,7 @@ export default function Home() {
               </div>
               <span className="rounded-lg border border-emerald-300/20 bg-emerald-300/10 px-3 py-1.5 text-xs font-semibold text-emerald-200">Trilha guiada</span>
             </div>
-            <div className="my-8 h-px bg-white/10" />
+            <img src="/academy/hero.webp" width="706" height="294" alt="" className="my-6 w-full rounded-xl" />
             <div className="space-y-5">
               {[
                 ["01", "Fundamentos da programação", "HTML · CSS · Lógica", "Conceitos"],
@@ -105,3 +105,4 @@ export default function Home() {
     </main>
   );
 }
+

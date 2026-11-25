@@ -65,3 +65,9 @@ não são declaradas verificadas. Não confundir esta evolução do leitor com c
 
 ## Etapa técnica do novo domínio
 Base auditada: main 5b392ac. A instalação limpa, os 38 testes e o typecheck passaram no Windows. Os testes de conteúdo agora comparam quebras de linha normalizadas; o Markdown aprovado permanece intacto. O import do leitor segue o padrão sem extensão. A aplicação usa 32 bytes aleatórios e SHA-256 para convites. O trigger 011 obtém lock da linha, revalida estado e prazo e registra consumo na transação da conta. O Supabase Auth confirmou cadastro público desativado e confirmação de email obrigatória. A confirmação de entrega e recuperação por email depende de caixa de teste e do painel Auth. As rotas e a configuração proposta estão em docs/NETLIFY_STATUS.md.
+
+## 25/11/2026 — interface da turma
+
+O painel usa ilustrações da referência fornecida, navegação responsiva e dados da sessão autenticada. O progresso exibido tem como denominador as aulas publicadas e liberadas para o estudante. O gráfico usa notas corrigidas no intervalo selecionado. O calendário reúne entregas registradas, e as perguntas são extraídas das seções de revisão.
+
+Validação local: 38 testes aprovados, TypeScript e build concluídos. No navegador, a versão compilada foi exercitada com um serviço de teste em loopback e identidade fictícia. Foram verificados login, pesquisa por teclado, Aula 001, menu em 390 px, bloqueio da administração para aluno, acesso administrativo, relatório e saída. Essas verificações não testam entrega por SMTP ou login com um convite real de produção. O teste visual utilizou capturas de desktop e celular. O conteúdo aprovado da Aula 001 e as políticas do banco foram preservados.
