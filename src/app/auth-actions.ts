@@ -46,8 +46,11 @@ export async function recover(_:FormState,form:FormData):Promise<FormState>{
  const parsed=email.safeParse(form.get('email'));if(!parsed.success)return {error:'Informe um email válido.'};
  const jar=await cookies();
  if(jar.has('recovery-wait'))return {error:'Você fez um pedido recente neste navegador. Confira o email ou aguarde um minuto para tentar novamente.'};
- const db=await database();
+ // A rejected resend must preserve the verifier for the last email actually sent.
+ const pendingCookies:Array<()=>void>=[];
+ const db=await database(pendingCookies);
  const {error}=await db.auth.resetPasswordForEmail(parsed.data,{redirectTo:process.env.NEXT_PUBLIC_APP_URL+'/nova-senha'});
+ if(!error)pendingCookies.forEach(apply=>apply());
  if(!error || error.status===429)jar.set('recovery-wait','1',{maxAge:60,httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',path:'/recuperar-senha'});
  return recoveryResult(error);
 }
