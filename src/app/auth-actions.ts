@@ -7,13 +7,15 @@ import {redirect} from 'next/navigation';
 import {database,serviceDatabase,configured} from '@/lib/supabase';
 import type {FormState} from '@/components/action-form';
 import {invalidInviteMessage} from '@/lib/invites';
-const email=z.email().max(254);const password=z.string().min(12).max(128);
+const email=z.string().trim().toLowerCase().pipe(z.email().max(254));const password=z.string().min(12).max(128);
 export async function login(_:FormState,form:FormData):Promise<FormState>{
  if(!configured())return {error:'O proprietário ainda precisa configurar o Supabase.'};
  const parsed=z.object({email,password:z.string().min(1).max(128)}).safeParse(Object.fromEntries(form));
  if(!parsed.success)return {error:'Verifique o email e a senha.'};
  const db=await database();const {error}=await db.auth.signInWithPassword(parsed.data);
- if(error)return {error:'Não foi possível entrar. Verifique os dados ou aguarde antes de tentar novamente.'};
+ if(error?.status===429)return {error:'Muitas tentativas. Aguarde alguns minutos antes de entrar.'};
+ if(error?.code==='invalid_credentials')return {error:'Email ou senha incorretos. Confira o email da sua conta ou solicite a recuperação de senha.'};
+ if(error)return {error:'O serviço de login está indisponível agora. Tente novamente em alguns minutos.'};
  redirect('/painel');
 }
 export async function logout(){const db=await database();await db.auth.signOut();redirect('/login');}
@@ -49,9 +51,19 @@ export async function recover(_:FormState,form:FormData):Promise<FormState>{
  if(!error || error.status===429)jar.set('recovery-wait','1',{maxAge:60,httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',path:'/recuperar-senha'});
  return recoveryResult(error);
 }
+export async function openRecovery(_:FormState,form:FormData):Promise<FormState>{
+ const hash=form.get('token_hash'),code=form.get('code');
+ const db=await database();
+ const proof=z.string().min(1).max(512).safeParse(hash||code);
+ if(!proof.success)return {error:'Link inválido. Solicite uma nova recuperação.'};
+ const exchange=hash?await db.auth.verifyOtp({type:'recovery',token_hash:proof.data}):await db.auth.exchangeCodeForSession(proof.data);
+ if(exchange.error)return {error:'Link expirado, utilizado ou aberto em outro navegador. Solicite outro e abra o email mais recente no navegador em que fez o pedido.'};
+ redirect('/nova-senha');
+}
 export async function changePassword(_:FormState,form:FormData):Promise<FormState>{
  const parsed=password.safeParse(form.get('password'));if(!parsed.success)return {error:'Utilize entre 12 e 128 caracteres.'};
- const db=await database();const {data:{user}}=await db.auth.getUser();if(!user)return {error:'O link expirou. Solicite uma nova recuperação.'};
- const {error}=await db.auth.updateUser({password:parsed.data});if(error)return {error:'Não foi possível alterar a senha.'};
+ const db=await database();
+ const {data:{user}}=await db.auth.getUser();if(!user)return {error:'O link expirou. Solicite uma nova recuperação.'};
+ const {error}=await db.auth.updateUser({password:parsed.data});if(error?.code==='same_password')return {error:'Escolha uma senha diferente da anterior.'};if(error)return {error:'Não foi possível alterar a senha. Confira as regras de senha e tente novamente.'};
  await db.auth.signOut();redirect('/login?message=password');
 }

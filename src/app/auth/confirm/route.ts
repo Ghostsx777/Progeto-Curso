@@ -8,14 +8,17 @@ export async function GET(request: NextRequest) {
  const code = params.get('code');
  let destination = '/login?message=expired';
 
- if (tokenHash && (type === 'recovery' || type === 'signup' || type === 'invite')) {
+ if (type === 'recovery' && (tokenHash || code)) {
+  const next = new URLSearchParams(tokenHash ? {token_hash:tokenHash} : {code:code!});
+  destination = '/nova-senha?' + next;
+ } else if (tokenHash && (type === 'signup' || type === 'invite')) {
   const db = await database();
   const {error} = await db.auth.verifyOtp({token_hash: tokenHash, type});
-  if (!error) destination = type === 'recovery' ? '/nova-senha' : '/painel';
+  if (!error) destination = '/painel';
  } else if (code) {
   const db = await database();
   const {error} = await db.auth.exchangeCodeForSession(code);
-  if (!error) destination = type === 'recovery' ? '/nova-senha' : '/painel';
+  if (!error) destination = '/painel';
  }
 
  const response = NextResponse.redirect(new URL(destination, request.url));
