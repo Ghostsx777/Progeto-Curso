@@ -22,6 +22,9 @@ with wave.open(str(target / "lesson.wav"), "wb") as track:
             data = chunk.audio_int16_bytes
             track.writeframesraw(data)
             count += len(data) // 2
+            # Separate sentences before continuing the same paragraph.
+            track.writeframesraw(bytes(2 * (rate // 6)))
+            count += rate // 6
         if count / rate > start:
             track.writeframesraw(bytes(2 * (rate // 4)))
             count += rate // 4
@@ -29,7 +32,7 @@ with wave.open(str(target / "lesson.wav"), "wb") as track:
 if not cues:
     raise ValueError("Aula sem trechos narráveis")
 subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-loglevel", "error", "-y", "-i",
-                str(target / "lesson.wav"), "-codec:a", "libmp3lame", "-b:a", "48k",
+                str(target / "lesson.wav"), "-codec:a", "libmp3lame", "-b:a", "80k",
                 str(target / "lesson.mp3")], check=True)
 (target / "cues.json").write_text(json.dumps(cues), encoding="utf-8")
 (target / "lesson.wav").unlink()

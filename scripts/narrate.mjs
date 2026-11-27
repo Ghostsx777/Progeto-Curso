@@ -4,11 +4,13 @@ import {mkdir,readFile,writeFile,rename,stat} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {unified} from 'unified';
+import {spokenText} from './spoken-text.mjs';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 
 const dir=resolve(process.env.DEVPATH_VOICE_DIR||'../devpath-voz');
-const voice='pt_BR-faber-medium';
+const model='pt_BR-faber-medium';
+const voice=model+'-v2';
 const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.SUPABASE_SERVICE_ROLE_KEY,{auth:{persistSession:false}});
 function checked(r){if(r.error)throw Error(r.error.message);return r.data}
 const prep=process.argv[2]==='--prepare';
@@ -24,17 +26,17 @@ for(const job of jobs){
   try{await stat(join(cache,'cues.json'))}catch{
    const tmp=cache+'-'+randomUUID();await mkdir(tmp,{recursive:true});
    const segments=[];let heading=0;
-   const plain=n=>n.value??(n.children??[]).map(plain).join('');
+   const plain=n=>n.type==='break'?'. ':n.value??(n.children??[]).map(plain).join('');
    function visit(n){
     if(n.type==='heading'||n.type==='paragraph'||n.type==='tableRow'){
      const text=n.type==='tableRow'?n.children.map(plain).join('. '):plain(n);
-     if(text.trim())segments.push({anchor:n.type==='heading'?'section-'+(++heading):'para-'+n.position.start.offset,text});
+     if(text.trim())segments.push({anchor:n.type==='heading'?'section-'+(++heading):'para-'+n.position.start.offset,text:spokenText(text)});
     }else for(const c of n.children??[])visit(c);
    }
    visit(unified().use(remarkParse).use(remarkGfm).parse(body));
    await writeFile(join(tmp,'segments.json'),JSON.stringify(segments));
    const py=process.env.DEVPATH_VOICE_PYTHON||join(dir,'venv',process.platform==='win32'?'Scripts/python.exe':'bin/python');
-   const result=spawnSync(py,['scripts/render-voice.py',join(dir,voice+'.onnx'),tmp],{stdio:'inherit'});
+   const result=spawnSync(py,['scripts/render-voice.py',join(dir,model+'.onnx'),tmp],{stdio:'inherit'});
    if(result.status!==0)throw Error('Falha no sintetizador local.');
    await rename(tmp,cache);
   }
