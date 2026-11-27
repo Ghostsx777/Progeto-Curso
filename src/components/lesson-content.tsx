@@ -28,12 +28,19 @@ function ReadingIndicator({root}:{root:React.RefObject<HTMLDivElement|null>}){
  useEffect(()=>{let pending=false;const update=()=>{pending=false;const r=root.current?.getBoundingClientRect();if(r)setProgress(Math.max(0,Math.min(100,Math.round((window.innerHeight-r.top)/Math.max(r.height,1)*100))));};const scroll=()=>{if(!pending){pending=true;requestAnimationFrame(update);}};update();window.addEventListener('scroll',scroll,{passive:true});window.addEventListener('resize',scroll);return()=>{window.removeEventListener('scroll',scroll);window.removeEventListener('resize',scroll);};},[root]);
  return <div className="reading-indicator"><label>Posição de leitura · {progress}% <progress value={progress} max={100}/></label><small>Indicador visual; não conclui a aula.</small></div>;
 }
-export function LessonContent({body,reading=false}:{body:string;reading?:boolean}){
+export function LessonContent({body,reading=false,hideIndex=false}:{body:string;reading?:boolean;hideIndex?:boolean}){
  const root=useRef<HTMLDivElement>(null);const toc=useMemo(()=>headings(body),[body]);
- return <div ref={root} className="lesson-content">{reading&&<ReadingIndicator root={root}/>}{toc.length>0&&<nav aria-label="Sumário da aula" className="lesson-toc"><strong>Nesta aula</strong><ol>{toc.map(h=><li key={h.id}><a href={`#${h.id}`}>{h.text}</a></li>)}</ol></nav>}<div className="prose"><Markdown skipHtml remarkPlugins={[remarkGfm]} urlTransform={(url,key)=>key==='src'?imageUrl(url)||'':url.startsWith('#')||safeHttps(url)?url:''} components={{
+ return <div ref={root} className="lesson-content">{reading&&<ReadingIndicator root={root}/>}{!hideIndex&&toc.length>0&&<nav aria-label="Sumário da aula" className="lesson-toc"><strong>Nesta aula</strong><ol>{toc.map(h=><li key={h.id}><a href={`#${h.id}`}>{h.text}</a></li>)}</ol></nav>}<div className="prose"><Markdown skipHtml remarkPlugins={[remarkGfm]} urlTransform={(url,key)=>key==='src'?imageUrl(url)||'':url.startsWith('#')||safeHttps(url)?url:''} components={{
  h1:({children,node})=><h2 id={toc.find(h=>h.offset===node?.position?.start.offset)?.id}>{children}</h2>,h2:({children,node})=><h2 id={toc.find(h=>h.offset===node?.position?.start.offset)?.id}>{children}</h2>,h3:({children,node})=><h3 id={toc.find(h=>h.offset===node?.position?.start.offset)?.id}>{children}</h3>,h4:({children,node})=><h4 id={toc.find(h=>h.offset===node?.position?.start.offset)?.id}>{children}</h4>,h5:({children,node})=><h5 id={toc.find(h=>h.offset===node?.position?.start.offset)?.id}>{children}</h5>,h6:({children,node})=><h6 id={toc.find(h=>h.offset===node?.position?.start.offset)?.id}>{children}</h6>,
  a:({href,children})=><a href={href} target={href?.startsWith('#')?undefined:'_blank'} rel="noopener noreferrer">{children}</a>,
- p:({children,node})=>node?.children.some(n=>n.type==='element'&&n.tagName==='img')?<div>{children}</div>:<p>{children}</p>,
+ li:({children,node})=>{
+  const offset=node?.position?.start.offset;
+  const prefix=offset===undefined?undefined:body.slice(offset,offset+24).match(/^(?:[-+*]|\d+[.)])\s+/)?.[0];
+  const tight=!node?.children.some(n=>n.type==='element'&&n.tagName==='p');
+  return <li id={tight&&offset!==undefined&&prefix?'para-'+(offset+prefix.length):undefined}>{children}</li>;
+ },
+ tr:({children,node})=><tr id={`para-${node?.position?.start.offset}`}>{children}</tr>,
+ p:({children,node})=>node?.children.some(n=>n.type==='element'&&n.tagName==='img')?<div>{children}</div>:<p id={`para-${node?.position?.start.offset}`}>{children}</p>,
  img:({src,alt,title})=><LessonImage block={{type:'image',src:typeof src==='string'?src:'',alt:alt||'Imagem didática',caption:title||alt||'Imagem',width:'medium',align:'center'}}/>,
  pre:({children})=><>{children}</>,
  code:({className,children})=>{const language=/language-(\S+)/.exec(className||'')?.[1],code=String(children);if(language==='devpath'){const p=parseMedia(code);return p.success?<Media block={p.data}/>:<p className="message" role="alert">Bloco didático inválido: {p.error.issues[0]?.message}</p>;}if(language==='mermaid')return <Diagram code={code}/>;return language||code.includes('\n')?<CodeExample code={code} language={language}/>:<code>{children}</code>;}

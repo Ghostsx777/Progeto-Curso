@@ -244,3 +244,20 @@ test('catálogo abre matrículas explicitamente e rejeita publicação por aluno
  await asUser(admin,'select public.set_course_publication($1,true)',[cid]);
  await asUser(a,'select public.enroll_course($1)',[cid]);
 });
+test('estudo privado: posição, favoritos e revisão de áudio respeitam a conta',async()=>{
+ await asUser(a,'insert into public.reading_state(lesson_id,section,seconds) values($1,$2,15)',[lesson,'section-1']);
+ await asUser(a,"insert into public.study_bookmarks(lesson_id,anchor,label) values($1,'','Teste')",[lesson]);
+ for(const table of ['reading_state','study_bookmarks']){
+  assert.equal((await asUser(b,'select * from public.'+table)).rows.length,0);
+  assert.equal((await asUser(a,'select * from public.'+table)).rows.length,1);
+ }
+ await assert.rejects(asUser(b,'insert into public.reading_state(student_id,lesson_id) values($1,$2)',[a,lesson]));
+ const hash='a'.repeat(64);
+ await assert.rejects(asUser(a,"insert into public.lesson_narrations(lesson_id,revision,status) values($1,$2,'queued')",[lesson,hash]));
+ await asUser(admin,"insert into public.lesson_narrations(lesson_id,revision,status) values($1,$2,'preview')",[lesson,hash]);
+ assert.equal((await asUser(a,'select * from public.lesson_narrations')).rows.length,0);
+ await asUser(admin,"update public.lesson_narrations set status='ready' where lesson_id=$1",[lesson]);
+ assert.equal((await asUser(a,'select * from public.lesson_narrations')).rows.length,1);
+ await asUser(a,"select public.save_note($1,'')",[lesson]);
+ assert.equal((await asUser(a,'select * from public.notes where lesson_id=$1',[lesson])).rows.length,0);
+});

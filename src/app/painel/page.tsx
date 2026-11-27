@@ -6,7 +6,7 @@ export default async function Dashboard(){
  const d=await studyData();
  const done=new Set(d.progress.filter(p=>p.completed_at).map(p=>p.lesson_id));
  const completed=d.lessons.filter(l=>done.has(l.id)).length;
- const next=d.lessons.find(l=>!done.has(l.id));
+ const next=d.lessons.find(l=>l.id===d.lastLesson&&!done.has(l.id))??d.lessons.find(l=>!done.has(l.id));
  const projects=d.activities.filter(a=>a.activity_type==='project');
  const submitted=new Set(d.submissions.map(s=>s.activity_id));
  const percent=d.lessons.length?Math.round(completed/d.lessons.length*100):0;
